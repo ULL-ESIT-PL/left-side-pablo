@@ -3,12 +3,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "bootstrap": "make bootstrap",
     "codesandbox": "make bootstrap-only; make build-no-bundle",
-    "build": "make build",
     "fix": "make fix",
     "lint": "make lint",
     "test": "make test",
+    "clean": "rm -rf node_modules; rm -rf packages/**/node_modules; rm -rf packages/**/lib",
     "my-test": "BABEL_ENV=test node_modules/.bin/jest -u packages/babel-parser/test/left-side.js"
   },
   "devDependencies": {
@@ -52,8 +51,6 @@
     "gulp-plumber": "^1.2.1",
     "husky": "^3.0.0",
     "jest": "^24.9.0",
-    "lerna": "^3.19.0",
-    "lerna-changelog": "^0.5.0",
     "lint-staged": "^9.2.0",
     "lodash": "^4.17.13",
     "mergeiterator": "^1.2.5",
@@ -73,9 +70,6 @@
     "through2": "^2.0.0",
     "typescript": "^3.6.3"
   },
-  "resolutions": {
-    "@lerna/collect-updates": "https://github.com/babel/lerna.git#babel-collect-updates"
-  },
   "engines": {
     "node": ">= 6.9.0",
     "npm": ">= 3.x",
@@ -86,6 +80,9 @@
       "eslint --format=codeframe"
     ]
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

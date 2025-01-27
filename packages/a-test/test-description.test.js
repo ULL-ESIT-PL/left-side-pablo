@@ -6,10 +6,10 @@ const execOut = new Set(fs.readdirSync("./exec_out", {encoding:"utf-8"}));
 for (let testFile of input) {
   test(testFile, () => {
     expect(execOut.has(testFile)).toBeTruthy();
-    const output = execSync(`npx babel ./in/${testFile}`);
+    const output = execSync(`npx babel ./in/${testFile}`, {encoding: "utf-8"}).trim();
     const outputPath = `./out/${testFile}`;
     fs.writeFileSync(outputPath, output, {encoding: "utf-8"});
-    let execResult = execSync(`node ${outputPath}`);
-    expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}));
+    let execResult = execSync(`node ${outputPath}`, {encoding: "utf-8"}).trim();
+    expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}).trim());
   })
 }

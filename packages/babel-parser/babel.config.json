@@ -1,5 +1,16 @@
 {
   "plugins": [
-    "./babel-left-side-plugin.cjs"
-  ]
+    "babel-plugin-add-import-extension"
+  ],
+  "presets": [
+    ["@babel/preset-env",
+      {
+        "modules": false
+      }
+    ],
+    "@babel/preset-flow"
+  ],
+  "targets": {
+    "node": "current"
+  }
 }

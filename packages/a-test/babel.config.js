@@ -6,5 +6,12 @@ module.exports = {
       }
     },*/
     "@ull-esit-pl/babel-plugin-left-side-plugin",
+  ]
+  /*,
+  presets: [
+    "@babel/preset-env"
   ],
+  targets: {
+    node: "current"
+  }*/
 };

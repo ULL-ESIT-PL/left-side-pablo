@@ -1,7 +1,9 @@
-const parser = require("@ull-esit-pl/parser-left-side");
-const types = require("@babel/types");
-import template from "@babel/template";
-// TODO: Switch to the scoped name when publishing the package.
+import * as parser from "@ull-esit-pl/parser-left-side"; 
+//const parser = require("@ull-esit-pl/parser-left-side");
+import * as types from "@babel/types" 
+//const types = require("@babel/types");
+import _template from "@babel/template";
+const template = _template.default;
 const SUPPORT_TEMPLATE = template(
   'const {assign, functionObject} = require("@ull-esit-pl/babel-plugin-left-side-support");',
 )();
@@ -23,7 +25,7 @@ function changeAssignableFunctionToValid(node) {
   return [funId, callExpression];
 }
 
-module.exports = function leftSidePlugin(babel) {
+export default function leftSidePlugin(babel) {
   return {
     parserOverride(code, opts) {
       return parser.parse(code, opts);
