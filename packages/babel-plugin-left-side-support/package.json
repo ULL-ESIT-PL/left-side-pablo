@@ -1,0 +1,24 @@
+{
+  "name": "@ull-esit-pl/babel-plugin-left-side-support",
+  "version": "1.0.1",
+  "description": "Support for the left side plugin",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "callable-instance": "2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg",
+    "directory": "packages/babel-plugin-left-side-support"    
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "author": "Pablo Santana Gonzalez <alu0101480541@ull.edu.es>",
+  "license": "ISC",
+  "gitHead": "df1dbf5d265ad3170234dff2e06cb385e08effc8"
+}
