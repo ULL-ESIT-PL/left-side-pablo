@@ -4,7 +4,8 @@
   "description": "Support plugin for the assignable functions",
   "main": "src/plugin.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "",
+    "build": ""
   },
   "dependencies": {
     "@ull-esit-pl/parser-left-side": "^1.0.0",
@@ -13,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg",
-    "directory": "packages/babel-plugin-left-side-plugin"    
+    "directory": "packages/babel-plugin-left-side-plugin"
   },
   "publishConfig": {
     "access": "public",

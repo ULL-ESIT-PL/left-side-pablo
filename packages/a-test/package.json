@@ -4,7 +4,8 @@
   "description": "Support plugin for the assignable functions",
   "main": "lib/plugin.js",
   "scripts": {
-    "test": "jest"
+    "test": "npx jest",
+    "build": ""
   },
   "dependencies": {
     "@ull-esit-pl/babel-plugin-left-side-plugin": "^1.0.0"

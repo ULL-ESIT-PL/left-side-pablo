@@ -21,9 +21,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg",
-    "directory": "packages/babel-parser"    
+    "directory": "packages/babel-parser"
   },
   "scripts": {
+    "test": "",
     "build": "npx babel src --out-dir lib"
   },
   "main": "lib/index.js",
