@@ -1,5 +1,6 @@
 const debug = false;
 const CallableInstance = require("callable-instance");
+const util = require("util");
 
 class StoreMap {
   // Implements the cache based on Map
@@ -30,6 +31,8 @@ class StoreObject {
   }
 }
 
+const CACHE_TYPE = StoreMap;
+
 class FunctionObject extends CallableInstance {
   constructor(a) {
     // CallableInstance accepts the name of the property to use as the callable
@@ -37,18 +40,18 @@ class FunctionObject extends CallableInstance {
     super("_call");
     this.rawFunction = a;
     //this.cache = new StoreObject();
-    this.cache = new StoreMap();
+    this.cache = new CACHE_TYPE();
+    this.maxParamNum = a.length;
     this.function = function (...args) {
-      let currentFunctionObject = this;
-      for (let i = 0; i < args.length; ++i) {
+      let currentCache = this.cache;
+      for (let i = 0; i < this.maxParamNum; ++i) {
         const arg = args[i];
-        if (currentFunctionObject?.cache && currentFunctionObject.cache.has(arg)) {
-          if (debug) console.log(`Cached value! ${currentFunctionObject.cache.get(arg)}`);
-          if (i + 1 === args.length) {
-            if (currentFunctionObject.cache.get(arg).cache !== undefined) break; // St
-            return currentFunctionObject.cache.get(arg); // Value in cache, return it.
+        if (currentCache instanceof CACHE_TYPE && currentCache.has(arg)) {
+          if (debug) console.log(`Cached value! ${currentCache.get(arg)}`);
+          if (i + 1 === this.maxParamNum) {
+            return currentCache.get(arg); // Value in cache, return it.
           }
-          currentFunctionObject = currentFunctionObject.cache.get(arg);
+          currentCache = currentCache.get(arg);
         } else {
           break; // Default to the original rawFunction.
         }
@@ -86,6 +89,11 @@ class FunctionObject extends CallableInstance {
     //}
     return this.cache.get(arg);
   }
+
+  [util.inspect.custom] (depths, opts) {
+    if (debug) return this;
+    return "<FUNCTION_OBJECT>";
+  }
 }
 
 function functionObject(a) {
@@ -93,4 +101,4 @@ function functionObject(a) {
   return new FunctionObject(a);
 }
 
-module.exports = { functionObject, FunctionObject };
+module.exports = { functionObject, FunctionObject, CACHE_TYPE };

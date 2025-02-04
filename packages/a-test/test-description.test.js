@@ -9,7 +9,7 @@ for (let testFile of input) {
     const output = execSync(`npx babel ./in/${testFile}`, {encoding: "utf-8"}).trim();
     const outputPath = `./out/${testFile}`;
     fs.writeFileSync(outputPath, output, {encoding: "utf-8"});
-    let execResult = execSync(`node ${outputPath}`, {encoding: "utf-8"}).trim();
+    let execResult = execSync(`node --no-warnings ${outputPath}`, {encoding: "utf-8"}).trim();
     expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}).trim());
   })
 }
