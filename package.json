@@ -59,7 +59,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --format=codeframe"
+      "eslint --format=codeframe --ignore-pattern 'examples'"
     ]
   },
   "workspaces": [
