@@ -12,13 +12,13 @@ for (let testFile of input) {
     const fullTestFile = path.join(inputFolder, testFile);
     let execResult = null;
     try {
-      execSync(`npx babel --config-file ${configFile} ${fullTestFile}`, {encoding: "utf-8"}).trim();
+      execSync(`npx babel --config-file ${configFile} ${fullTestFile}`, {encoding: "utf-8"});
     } catch (e) {
       execResult = e.message;
       //console.log(execResult);
     }
     let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
     const itMatches = errorPattern(execResult);
-    //expect(itMatches).toBe(true);
+    expect(itMatches).toBe(true);
   })
 }
