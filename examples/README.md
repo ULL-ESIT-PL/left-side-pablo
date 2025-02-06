@@ -1,7 +1,10 @@
 # Examples
 
+## What is this?
+
 This folder is used to test ideas about the plugin. 
 Examples are first tested here before being included in the test suite.
+It is a playground for the plugin.
 
 
 ## Compiling 
