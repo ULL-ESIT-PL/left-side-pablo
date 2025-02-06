@@ -2,6 +2,7 @@
   "name": "babel",
   "private": true,
   "license": "MIT",
+  "version": "1.0.0",
   "scripts": {
     "test": "npm run test --ws",
     "build": "npm run build --ws",
@@ -59,17 +60,17 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --format=codeframe --ignore-pattern 'examples/*'"
+      "eslint --format=codeframe --ignore-pattern 'examples/*' --ignore-pattern 'packages/babel-plugin-left-side-plugin/test/'"
     ]
   },
   "workspaces": [
     "packages/babel-parser",
-    "packages/babel-plugin-left-side",
+    "packages/babel-plugin-left-side-plugin",
     "packages/babel-plugin-left-side-support"
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "#comment pre-commit": "lint-staged"
     }
   }
 }

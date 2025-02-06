@@ -6,7 +6,7 @@ export function normalizeESLintConfig(options) {
     ecmaVersion: 2020,
     sourceType: "module",
     allowImportExportEverywhere: false,
-    requireConfigFile: true,
+    requireConfigFile: false,
   };
 
   return Object.assign(defaultOptions, options);
