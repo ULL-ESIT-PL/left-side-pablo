@@ -24,7 +24,7 @@
     "directory": "packages/babel-parser"
   },
   "scripts": {
-    "test": "",
+    "test": "echo no tests for babel-parser",
     "build": "npx babel src --out-dir lib"
   },
   "main": "lib/index.js",

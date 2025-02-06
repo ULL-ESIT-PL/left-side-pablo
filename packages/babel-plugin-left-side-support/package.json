@@ -4,7 +4,7 @@
   "description": "Support for the left side plugin",
   "main": "src/index.js",
   "scripts": {
-    "test": "",
+    "test": "echo no tests for babel plugin left-side-support",
     "build": ""
   },
   "dependencies": {
