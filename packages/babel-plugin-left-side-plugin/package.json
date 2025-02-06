@@ -4,8 +4,8 @@
   "description": "Support plugin for the assignable functions",
   "main": "src/plugin.js",
   "scripts": {
-    "test": "jest",
-    "build": ""
+    "test": "jest --verbose --maxWorkers 4",
+    "build": "echo 'no build for babel-plugin-left-side-plugin"
   },
   "dependencies": {
     "@ull-esit-pl/parser-left-side": "^1.0.0",
