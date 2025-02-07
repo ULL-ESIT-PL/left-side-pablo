@@ -38,8 +38,8 @@ async function main() {
     let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
     test(testFile, async (done) => {
       try {
-        let {/* code, error, stdout,*/ stderr } = await cli(configFile, testFile)
-        expect(errorPattern(stderr)).toBe(true);
+        let {code, error, stdout, stderr } = await cli(configFile, testFile)
+        expect(errorPattern({code, error, stdout, stderr })).toBe(true);
         done();
       } catch (e) {
         console.log(e.message);
