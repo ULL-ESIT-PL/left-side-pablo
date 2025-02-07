@@ -104,13 +104,13 @@ const safeGet = function (prop) {
 function currying(fn) {
   const numParamsRequired = fn.length;
   function curryFactory(params) {
-    return function (...args) {
+    return functionObject(function (...args) {
       const newParams = params.concat(args);
       if (newParams.length >= numParamsRequired) {
         return fn(...newParams);
       }
       return functionObject(curryFactory(newParams));
-    }
+    })
   }
   return curryFactory([]);
 }
@@ -129,7 +129,7 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
       exception: null,
       undef: null,
       primitive: null,
-      // TODO: domain:  null, 
+      // TODO: domain:  null,
       // TODO: original: the original object that is being wrapped?
       debug: false, // just for developers
       ...options // Override default options with user options
