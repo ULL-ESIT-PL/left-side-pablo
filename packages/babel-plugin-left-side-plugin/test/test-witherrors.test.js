@@ -1,24 +1,51 @@
-const { execSync } = require("child_process");
+const { exec, execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const inputFolder = path.join(__dirname, "error");
 
-
-const input = fs.readdirSync(inputFolder, {encoding:"utf-8"});
-let configFile = path.join(__dirname, "babel.config.js");
-
-for (let testFile of input) {
-  test(testFile, () => {
-    const fullTestFile = path.join(inputFolder, testFile);
-    let execResult = null;
-    try {
-      execSync(`npx babel --config-file ${configFile} ${fullTestFile}`, {encoding: "utf-8"});
-    } catch (e) {
-      execResult = e.message;
-      //console.log(execResult);
-    }
-    let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
-    const itMatches = errorPattern(execResult);
-    expect(itMatches).toBe(true);
+/**
+ * interface CliResult {
+ *  code: number,
+ *  error: ExecException | null,
+ *  stdout: string,
+ *  stderr: string
+ * }
+ * @param {*} configFile string
+ * @param {*} testFile string
+ * @returns Promise<CliResult>
+ */
+async function cli(configFile, testFile) {
+  return new Promise(resolve => {
+    let fullConfigFile = path.join(__dirname, configFile);
+    let fullTestFile = path.join(inputFolder, testFile);
+    exec(`npx babel --config-file ${fullConfigFile} ${fullTestFile}`, { encoding: "utf-8" },
+      (error, stdout, stderr) => {
+        resolve({
+          code: error && error.code ? error.code : 0,
+          error,
+          stdout,
+          stderr
+        });
+      })
   })
 }
+
+async function main() {
+  const input = fs.readdirSync(inputFolder, { encoding: "utf-8" });
+  let configFile = "babel.config.js";
+
+  for (let testFile of input) {
+    let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
+    test(testFile, async (done) => {
+      try {
+        let {/* code, error, stdout,*/ stderr } = await cli(configFile, testFile)
+        expect(errorPattern(stderr)).toBe(true);
+        done();
+      } catch (e) {
+        console.log(e.message);
+      }
+    })
+  }
+}
+
+main();
