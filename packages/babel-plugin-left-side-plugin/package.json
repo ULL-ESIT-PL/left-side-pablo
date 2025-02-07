@@ -5,7 +5,7 @@
   "main": "src/plugin.js",
   "scripts": {
     "test": "jest --verbose",
-    "build": "echo 'no build for babel-plugin-left-side-plugin"
+    "build": ""
   },
   "dependencies": {
     "@ull-esit-pl/parser-left-side": "^1.0.0",

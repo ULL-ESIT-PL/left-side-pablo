@@ -1,10 +1,13 @@
 const {
   assign,
-  functionObject
+  mAssign,
+  functionObject,
+  FunctionObject,
+  Storage
 } = require("@ull-esit-pl/babel-plugin-left-side-support");
-const foo = functionObject(function (bar) {
+const foo = functionObject(function foo(bar) {
   return bar * 2;
 });
-assign(foo, [10], 5);
+mAssign(foo, [10], 5);
 console.log(foo(10)); //  5
 console.log(foo(5)); // 10
