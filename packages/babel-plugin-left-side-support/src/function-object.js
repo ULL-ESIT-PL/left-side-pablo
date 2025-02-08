@@ -118,18 +118,18 @@ function currying(fn) {
 */
 
 function currying(func) {
-
+  func.maxParamNum = func.length;
   return functionObject(function curried(...args) {
     //console.log("args", args, func.length);
-    if (args.length >= func.length) {
+    if (args.length >= func.maxParamNum) {
       return /* func(args); */ func.apply(this, args);
     } else {
       return functionObject(function(...args2) {
         debugger;
         return curried.apply(this, args.concat(args2));
-      })
+      }, {maxParamNum: func.maxParamNum - args.length});
     }
-  });
+  }, {maxParamNum: func.maxParamNum});
 }
 
 // TODO: FunctionObject constructor cache and exception parameters #5 https://github.com/ULL-ESIT-PL-2425/parser-left-side-crguezl/issues/5
@@ -153,7 +153,9 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
     };
     super("_call");
     if (a instanceof Function) { // TODO: Convert to a switch?
+      this.maxParamNum = a?.maxParamNum || a.length; // == this.rawFunction.length;
       if (a.length >1) {
+        this.originalFunction = a;
         this.rawFunction = currying(a);
       }
       //else if (a.length === 0) it can be because of the currying ... throw new Error(`An assignable function must have at least one parameter.`);
@@ -174,7 +176,7 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
       this.rawFunction = safeGet.bind(a);
     }
     else if (typeof a === 'number') {
-      this.rawFunction = _ => a
+      this.rawFunction = () => a
     }
     else {
       throw new Error(`Unsupported type for FunctionObject constructor: ${a}`);
@@ -186,7 +188,7 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
     this.debug = options.debug;
     this.cache.debug = this.debug;
     //if (this.debug) console.log("in functionObject: ", this);
-    this.function = function (...args) {
+    this.auxFunction = function (...args) {
       //console.error(`FunctionObject called with ${args}`);
       if (args.length !== 1) throw new Error(`An assignable function must be called with a single argument. Received: ${args.length} arguments instead`);
 
@@ -214,11 +216,21 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
         throw error;
       }
     };
+    this.function = function(...multiArgs) {
+      //console.log("multiArgs", multiArgs);
+      let result = this.auxFunction(multiArgs[0]);
+
+      for(let i = 1; i < multiArgs.length; i++) {
+        result = result(multiArgs[i]);
+      }
+      return result;
+    }
+
   }
 
-  _call(arg) {
+  _call(...args) {
     //if (this.debug) console.log("in call: ",arg)
-    const result = this.function(arg);
+    const result = this.function(...args);
     //console.log(result);
     // Are we sure about this? If the underlying function is supposed to give undefined this would be wrong.
     //return (typeof result == 'undefined') ? null : result;
