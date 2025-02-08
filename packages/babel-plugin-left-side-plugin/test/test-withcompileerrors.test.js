@@ -1,7 +1,7 @@
 const { exec, execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
-const inputFolder = path.join(__dirname, "error");
+const inputFolder = path.join(__dirname, "compileerror");
 
 /**
  * interface CliResult {
