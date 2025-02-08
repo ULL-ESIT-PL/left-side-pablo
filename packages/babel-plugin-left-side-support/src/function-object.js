@@ -101,6 +101,7 @@ const safeGet = function (prop) {
   }
 }
 
+/*
 function currying(fn) {
   const numParamsRequired = fn.length;
   function curryFactory(params) {
@@ -112,7 +113,23 @@ function currying(fn) {
       return functionObject(curryFactory(newParams));
     })
   }
-  return curryFactory([]);
+  return functionObject(curryFactory([]));
+}
+*/
+
+function currying(func) {
+
+  return functionObject(function curried(...args) {
+    //console.log("args", args, func.length);
+    if (args.length >= func.length) {
+      return /* func(args); */ func.apply(this, args);
+    } else {
+      return functionObject(function(...args2) {
+        debugger;
+        return curried.apply(this, args.concat(args2));
+      })
+    }
+  });
 }
 
 // TODO: FunctionObject constructor cache and exception parameters #5 https://github.com/ULL-ESIT-PL-2425/parser-left-side-crguezl/issues/5
@@ -136,8 +153,10 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
     };
     super("_call");
     if (a instanceof Function) { // TODO: Convert to a switch?
-      if (a.length >1) this.rawFunction = currying(a); // Curry function "a" and make it throw if undefined?
-      //else if (a.length === 0) throw new Error(`An assignable function must have at least one parameter.`);
+      if (a.length >1) {
+        this.rawFunction = currying(a);
+      }
+      //else if (a.length === 0) it can be because of the currying ... throw new Error(`An assignable function must have at least one parameter.`);
       else this.rawFunction = a;
     } else if (a instanceof Array) {
       this.rawFunction = safeAt.bind(a);
@@ -232,4 +251,8 @@ function functionObject(a, options) {
   return new FunctionObject(a, options);
 }
 
-module.exports = { functionObject, FunctionObject, Storage };
+function isFunctionObject(a) {
+  return a instanceof FunctionObject;
+}
+
+module.exports = { functionObject, FunctionObject, isFunctionObject, Storage, currying };

@@ -1,4 +1,4 @@
-const { functionObject,  FunctionObject} = require("./function-object");
+const { functionObject,  FunctionObject, isFunctionObject} = require("./function-object");
 
 function assign(f, cacheArgs, cacheValue) {
   //if (f.debug) console.log('src f', f.toString(), cacheArgs, cacheValue);
@@ -15,10 +15,11 @@ function assign(f, cacheArgs, cacheValue) {
 
 function mAssign(f, cacheArgs, cacheValue) {
   // debugger;
-  console.log('cacheargs', cacheArgs, 'cacheValue', cacheValue);
+  //console.log('cacheargs', cacheArgs, 'cacheValue', cacheValue);
+  cacheArgs = cacheArgs.flat();
   for (let i = 0; i < cacheArgs.length; i++) {
     let cacheArgument = cacheArgs[i];
-    console.log(i, 'cacheArgument', cacheArgument, Array.isArray(cacheArgument));
+    //console.log(i, 'cacheArgument', cacheArgument, Array.isArray(cacheArgument));
 
     const next = i + 1;
     if (next == cacheArgs.length) { // the end

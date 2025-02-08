@@ -4,7 +4,7 @@ const {
   functionObject,
   FunctionObject,
   Storage
-} = require("@ull-esit-pl-2425/babel-plugin-left-side-support");
+} = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function foo(a) {
   return functionObject(function bar(b) {
     return functionObject(function baz(c) {
@@ -14,5 +14,5 @@ const foo = functionObject(function foo(a) {
 });
 mAssign(foo, [2, 3, 5], "Another value");
 console.log(foo(2)(3)(5)); // "Another Value"
-console.log(foo(2)(3)); // 11
+console.log(foo(2)(3)(6)); // 11
 console.log(foo(1)(3)(6)); // 10

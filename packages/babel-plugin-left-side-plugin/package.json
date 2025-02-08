@@ -5,6 +5,8 @@
   "main": "src/plugin.js",
   "scripts": {
     "test": "jest --verbose",
+    "testwatch": "jest --verbose --maxWorkers 4 --watch",
+    "testchanged": "jest --verbose --maxWorkers 4 -t 'left-side' --onlyChanged",
     "build": ""
   },
   "dependencies": {

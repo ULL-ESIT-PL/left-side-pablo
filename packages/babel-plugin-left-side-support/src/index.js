@@ -1,4 +1,4 @@
-const { functionObject, FunctionObject, Storage } = require("./function-object");
+const { functionObject, FunctionObject, Storage, isFunctionObject, currying } = require("./function-object");
 const { assign, mAssign } = require("./assign");
 
 module.exports = {
@@ -6,5 +6,7 @@ module.exports = {
   mAssign,
   functionObject,
   FunctionObject,
-  Storage
+  Storage,
+  isFunctionObject,
+  currying
 };

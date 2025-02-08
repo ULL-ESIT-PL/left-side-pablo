@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "npm run test --ws",
+    "testwatch": "jest --verbose --maxWorkers 4 --watch",
     "build": "npm run build --ws",
     "clean": "rm -rf node_modules; rm -rf packages/**/node_modules; rm -rf packages/**/lib",
     "clean_build": "npm run clean; npm i; npm run build",
