@@ -97,7 +97,8 @@ const config = {
     // WARNING CASIANO!!! REMOVING TESTS NOT PASSING. WE HAVE TO FIX THEM
     //"<rootDir>/packages/babel-parser/test/left-side.js",
     "<rootDir>packages/babel-plugin-left-side-plugin/test/in*",
-    "<rootDir>packages/babel-plugin-left-side-plugin/test/error/*",
+    "<rootDir>packages/babel-plugin-left-side-plugin/test/compileerror/*",
+    "<rootDir>packages/babel-plugin-left-side-plugin/test/runtimeerror/*",
     "<rootDir>packages/babel-plugin-left-side-plugin/test/errorpattern/",
     "<rootDir>packages/babel-plugin-left-side-plugin/test/out*",
     "<rootDir>packages/babel-plugin-left-side-plugin/test/exec_out*",
