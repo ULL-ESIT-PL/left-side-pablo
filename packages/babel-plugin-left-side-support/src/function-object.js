@@ -218,6 +218,7 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
     };
     this.function = function(...multiArgs) {
       //console.log("multiArgs", multiArgs);
+      debugger;
       let result = this.auxFunction(multiArgs[0]);
 
       for(let i = 1; i < multiArgs.length; i++) {
@@ -229,7 +230,8 @@ class FunctionObject extends CallableInstance {   // CallableInstance accepts th
   }
 
   _call(...args) {
-    //if (this.debug) console.log("in call: ",arg)
+    console.log("in call: ",args)
+    debugger;
     const result = this.function(...args);
     //console.log(result);
     // Are we sure about this? If the underlying function is supposed to give undefined this would be wrong.

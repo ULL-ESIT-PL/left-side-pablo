@@ -14,7 +14,7 @@ function assign(f, cacheArgs, cacheValue) {
 }
 
 function mAssign(f, cacheArgs, cacheValue) {
-  // debugger;
+  debugger;
   //console.log('cacheargs', cacheArgs, 'cacheValue', cacheValue);
   cacheArgs = cacheArgs.flat();
   for (let i = 0; i < cacheArgs.length; i++) {

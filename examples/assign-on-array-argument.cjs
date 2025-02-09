@@ -1,15 +1,20 @@
 const {
   assign,
+  mAssign,
   functionObject,
-  FunctionObject
-} = require("@ull-esit-pl-2425/babel-plugin-left-side-support");
+  FunctionObject,
+  Storage
+} = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function foo(bar) {
+  debugger;
   return functionObject(function tutu(baz) {
+    console.log(typeof bar);
     return bar.concat(baz);
   });
-}); // Error: Invalid left side callexpression in assignment. A "object" can not be used as a key in an assignment.
+}); // Semantic decision: references are not allowed as keys in a function assignment
+// Error: Invalid left side callexpression in assignment. A "object" can not be used as a key in an assignment.
 try {
-  assign(foo, [[1, 2]], foo([1, 2])), assign(foo([1, 2]), [3], 9);
+  mAssign(foo, [[[1, 2]], 3], 9);
 } catch (e) {
   console.log(e.message);
 }
