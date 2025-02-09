@@ -2,6 +2,7 @@ const { exec, execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const inputFolder = path.join(__dirname, "compileerror");
+const outFolder = path.join(__dirname, "out");
 
 /**
  * interface CliResult {
@@ -27,11 +28,18 @@ async function cli(command) {
   })
 }
 
-async function babelCompile(configFile, testFile) {
+async function babelCompile(configFile, testFile, outputFile) {
   let fullConfigFile = path.join(__dirname, configFile);
   let fullTestFile = path.join(inputFolder, testFile);
-  let command = `npx babel --config-file ${fullConfigFile} ${fullTestFile}`;
+  let fullOutputFile = path.join(outFolder, outputFile || testFile); ;
+  let command = `npx babel --config-file ${fullConfigFile} ${fullTestFile} --out-file ${fullOutputFile}`;
   return await cli(command, testFile)
+}
+
+async function runProgram(testFile) {
+  let fullTestFile = path.join(outFolder, testFile);
+  let command = `node --no-warnings ${fullTestFile}`;
+  return await cli(command, fullTestFile)
 }
 
 async function testCompileTimeErrors() {
@@ -44,6 +52,7 @@ async function testCompileTimeErrors() {
       try {
         let {code, error, stdout, stderr } = await babelCompile(configFile, testFile)
         expect(errorPattern({code, error, stdout, stderr })).toBe(true);
+
         done();
       } catch (e) {
         console.log(e.message);
@@ -55,7 +64,6 @@ async function testCompileTimeErrors() {
 testCompileTimeErrors();
 
 /*
-
 const runTimeInputFolder = path.join(__dirname, "runtimeerror");
 
 async function testRunTimeErrors() {
@@ -66,9 +74,10 @@ async function testRunTimeErrors() {
     let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
     test(testFile, async (done) => {
       try {
-        let compileResult = await cli(configFile, testFile)
+        let compileResult = await babelCompile(configFile, testFile)
         expect(compileResult.code).toBe(0)
 
+        let {code, error, stdout, stderr } = await runProgram(testFile)
         expect(errorPattern({code, error, stdout, stderr })).toBe(true);
         done();
       } catch (e) {
