@@ -8,7 +8,7 @@ fi
 # Extract the test name from the argument
 TEST_NAME=$(basename $1 .js)
 # Copy the test file to the test folder packages/babel-plugin-left-side-plugin/test/in/
-cp examples/${TEST_NAME}.js packages/babel-plugin-left-side-plugin/test/error/
+cp examples/${TEST_NAME}.js packages/babel-plugin-left-side-plugin/test/compileerror/
 if [ $? -ne 0 ]; then
   exit 2
 fi
