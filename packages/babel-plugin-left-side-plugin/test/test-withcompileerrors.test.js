@@ -27,6 +27,13 @@ async function cli(command) {
   })
 }
 
+async function babelCompile(configFile, testFile) {
+  let fullConfigFile = path.join(__dirname, configFile);
+  let fullTestFile = path.join(inputFolder, testFile);
+  let command = `npx babel --config-file ${fullConfigFile} ${fullTestFile}`;
+  return await cli(command, testFile)
+}
+
 async function testCompileTimeErrors() {
   const input = fs.readdirSync(inputFolder, { encoding: "utf-8" });
   let configFile = "babel.config.js";
@@ -35,10 +42,7 @@ async function testCompileTimeErrors() {
     let errorPattern = require(path.join(__dirname, 'errorpattern', testFile));
     test(testFile, async (done) => {
       try {
-        let fullConfigFile = path.join(__dirname, configFile);
-        let fullTestFile = path.join(inputFolder, testFile);
-        let command = `npx babel --config-file ${fullConfigFile} ${fullTestFile}`;
-        let {code, error, stdout, stderr } = await cli(command, testFile)
+        let {code, error, stdout, stderr } = await babelCompile(configFile, testFile)
         expect(errorPattern({code, error, stdout, stderr })).toBe(true);
         done();
       } catch (e) {
