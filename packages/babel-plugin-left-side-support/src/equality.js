@@ -15,6 +15,21 @@ function checkStructuralEquality(obj1, obj2) {
   return true;
 }
 
+function checkPartialStructuralEquality(obj1, obj2) {
+  if (obj1 === null || obj2 === null) return obj1 === obj2;
+  if (typeof obj1 !== typeof obj2) {
+    return false;
+  }
+  if (typeof obj1 !== "object") {
+    return obj1 === obj2;
+  }
+  for (let key in obj1) {
+    if (!key in obj2 || !checkPartialStructuralEquality(obj1[key], obj2[key])) return false;
+  }
+  return true;
+}
+
 module.exports = {
-  checkStructuralEquality
+  checkStructuralEquality,
+  checkPartialStructuralEquality
 };

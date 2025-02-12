@@ -6,12 +6,11 @@ const foo = functionObject(function (bar) {
   return bar;
 });
 let obj1 = {
-  a: "some",
-  b: "thing"
+  a: "some"
 };
 let obj2 = {
   a: "some",
   b: "thing"
 };
-assign(foo, [obj1], "some other value", []);
+assign(foo, [obj1], "some other value", [0]); // Partial match syntax
 console.log(foo(obj2)); // "some other value"

@@ -8,6 +8,6 @@ const foo = functionObject(function (bar) {
 let arr1 = [1, 2, 3];
 let arr2 = [1, 2, 3];
 let arr3 = [2, 3, 4];
-assign(foo, [arr1], "some other value");
+assign(foo, [arr1], "some other value", []);
 console.log(foo(arr2)); // "some other value"
 console.log(foo(arr3)); // 1

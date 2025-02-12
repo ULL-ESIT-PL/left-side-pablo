@@ -1,11 +1,12 @@
 const { functionObject, FunctionObject, CACHE_TYPE } = require("./function-object");
 
-function assign(f, cacheArgs, cacheValue) {
+function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
   //console.log('f', f.toString(), cacheArgs, cacheValue);
   //debugger;
   if (!f instanceof FunctionObject) {
     throw new Error('TypeError: Cannot assign values to a normal function. It must be a FunctionObject');
   }
+  partialMatchingIndexes = new Set(partialMatchingIndexes);
   const maxParamNum = f.maxParamNum;
   let currentCache = f.cache;
   for (let i = 0; i < maxParamNum; i++) {
@@ -28,7 +29,11 @@ function assign(f, cacheArgs, cacheValue) {
     //console.log(f)
     let auxCache;
     if (!currentCache.has(cacheArgument)) {
-      auxCache = new CACHE_TYPE();
+      if (partialMatchingIndexes.has(i)) {
+        auxCache = new CACHE_TYPE(true);
+      } else {
+        auxCache = new CACHE_TYPE();
+      }
       currentCache.set(cacheArgument, auxCache);
     } else {
       auxCache = currentCache.get(cacheArgument);
