@@ -1,6 +1,6 @@
-import * as parser from "@ull-esit-pl/parser-left-side"; 
+import * as parser from "@ull-esit-pl/parser-left-side";
 //const parser = require("@ull-esit-pl/parser-left-side");
-import * as types from "@babel/types" 
+import * as types from "@babel/types"
 //const types = require("@babel/types");
 import _template from "@babel/template";
 const template = _template.default;
@@ -38,7 +38,8 @@ export default function leftSidePlugin(babel) {
           const args = node.left.arguments;
           const rvalue = node.right;
           const argsArray = types.arrayExpression(args);
-          const assignArgs = [callee, argsArray, rvalue];
+          const partialMatchArray = types.arrayExpression(Array.from(args.partialMatch).map(arg => types.numericLiteral(arg)));
+          const assignArgs = [callee, argsArray, rvalue, partialMatchArray];
           const functionAssign = babel.types.identifier("assign");
           path.replaceWith(
             babel.types.callExpression(functionAssign, assignArgs),

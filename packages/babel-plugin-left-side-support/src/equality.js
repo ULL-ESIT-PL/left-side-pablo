@@ -2,7 +2,8 @@
 
 // Full match between two objects
 function checkStructuralEquality(obj1, obj2) {
-  if (typeof obj1 !== typeof obj2) {
+  if (obj1 === null || obj2 === null) return obj1 === obj2;
+  if (typeof obj1 !== typeof obj2 || Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
   if (typeof obj1 !== "object") {

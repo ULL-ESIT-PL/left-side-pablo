@@ -798,11 +798,12 @@ export default class ExpressionParser extends LValParser {
     nodeForExtra?: ?N.Node,
   ): $ReadOnlyArray<?N.Expression> {
     const elts = [];
+    elts["partialMatch"] = new Set();
     let innerParenStart;
     let first = true;
     const oldInFSharpPipelineDirectBody = this.state.inFSharpPipelineDirectBody;
     this.state.inFSharpPipelineDirectBody = false;
-
+    let currentArgInd = 0;
     while (!this.eat(close)) {
       if (first) {
         first = false;
@@ -841,6 +842,11 @@ export default class ExpressionParser extends LValParser {
           allowPlaceholder,
         ),
       );
+
+      if (this.eat(tt.atat)) {
+        elts["partialMatch"].add(currentArgInd);
+      }
+      ++currentArgInd;
     }
 
     // we found an async arrow function so let's not allow any inner parens

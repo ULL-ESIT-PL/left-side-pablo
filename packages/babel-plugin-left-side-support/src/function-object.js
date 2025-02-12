@@ -11,14 +11,14 @@ class StoreMap {
     this.equality = checkStructuralEquality; // At the moment, support full match.
   }
   set(key, value) {
-    if (typeof key === "object") {
+    if (key !== null && typeof key === "object") {
       this.objectStore.push([key, value]);
       return;
     }
     this.store.set(key, value);
   }
   get(key) {
-    if (typeof key === "object") {
+    if (key !== null && typeof key === "object") {
       for (let [currentKey, currentValue] of this.objectStore) {
         if (this.equality(currentKey, key)) return currentValue;
       }
@@ -27,7 +27,7 @@ class StoreMap {
     return this.store.get(key);
   }
   has(key) {
-    if (typeof key === "object") {
+    if (key !== null && typeof key === "object") {
       for (let [currentKey, _] of this.objectStore) {
         if (this.equality(currentKey, key)) return true;
       }
