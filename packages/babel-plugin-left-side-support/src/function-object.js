@@ -1,19 +1,38 @@
 const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
+const {checkStructuralEquality} = require("./equality.js");
 
 class StoreMap {
   // Implements the cache based on Map
   constructor() {
     this.store = new Map();
+    this.objectStore = [];
+    this.equality = checkStructuralEquality; // At the moment, support full match.
   }
   set(key, value) {
+    if (typeof key === "object") {
+      this.objectStore.push([key, value]);
+      return;
+    }
     this.store.set(key, value);
   }
   get(key) {
+    if (typeof key === "object") {
+      for (let [currentKey, currentValue] of this.objectStore) {
+        if (this.equality(currentKey, key)) return currentValue;
+      }
+      return false;
+    }
     return this.store.get(key);
   }
   has(key) {
+    if (typeof key === "object") {
+      for (let [currentKey, _] of this.objectStore) {
+        if (this.equality(currentKey, key)) return true;
+      }
+      return false;
+    }
     return this.store.has(key);
   }
 }
