@@ -1,5 +1,5 @@
 function @@ foo(bar) {
-  return bar;
+  return 1;
 }
 
 let obj1 = {a: "some"};

@@ -3,7 +3,7 @@ const {
   functionObject
 } = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
-  return bar;
+  return 1;
 });
 let obj1 = {
   a: "some"

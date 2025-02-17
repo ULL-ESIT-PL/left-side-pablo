@@ -1,3 +1,4 @@
+const { checkPartialStructuralEquality, checkStructuralEquality } = require("./equality");
 const { functionObject, FunctionObject, CACHE_TYPE } = require("./function-object");
 
 function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
@@ -19,22 +20,19 @@ function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
       throw error;
     }*/
     const next = i + 1;
+    const equalityFun = partialMatchingIndexes.has(i) ? checkPartialStructuralEquality : checkStructuralEquality;
     if (next == maxParamNum) {
       // the end
       //console.log(cacheArgs)
-      currentCache.set(cacheArgument, cacheValue);
+      currentCache.set(cacheArgument, cacheValue, equalityFun);
       return cacheValue;
     }
     // If there are more arguments
     //console.log(f)
     let auxCache;
     if (!currentCache.has(cacheArgument)) {
-      if (partialMatchingIndexes.has(i)) {
-        auxCache = new CACHE_TYPE(true);
-      } else {
-        auxCache = new CACHE_TYPE();
-      }
-      currentCache.set(cacheArgument, auxCache);
+      auxCache = new CACHE_TYPE();
+      currentCache.set(cacheArgument, auxCache, equalityFun);
     } else {
       auxCache = currentCache.get(cacheArgument);
     }

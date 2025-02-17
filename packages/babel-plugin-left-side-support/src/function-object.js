@@ -8,19 +8,18 @@ class StoreMap {
   constructor() {
     this.store = new Map();
     this.objectStore = [];
-    this.equality = checkStructuralEquality; // At the moment, support full match.
   }
-  set(key, value) {
+  set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      this.objectStore.push([key, value]);
+      this.objectStore.push([key, value, equalityFun]);
       return;
     }
     this.store.set(key, value);
   }
   get(key) {
     if (key !== null && typeof key === "object") {
-      for (let [currentKey, currentValue] of this.objectStore) {
-        if (this.equality(currentKey, key)) return currentValue;
+      for (let [currentKey, currentValue, equalityFun] of this.objectStore) {
+        if (equalityFun(currentKey, key)) return currentValue;
       }
       return false;
     }
@@ -28,8 +27,8 @@ class StoreMap {
   }
   has(key) {
     if (key !== null && typeof key === "object") {
-      for (let [currentKey, _] of this.objectStore) {
-        if (this.equality(currentKey, key)) return true;
+      for (let [currentKey, _, equalityFun] of this.objectStore) {
+        if (equalityFun(currentKey, key)) return true;
       }
       return false;
     }
