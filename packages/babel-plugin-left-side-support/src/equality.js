@@ -12,6 +12,9 @@ function checkStructuralEquality(obj1, obj2) {
   for (let key in obj1) {
     if (!key in obj2 || !checkStructuralEquality(obj1[key], obj2[key])) return false;
   }
+  if (obj1.entries !== undefined) { // TODO: Issue with Maps and Sets
+    return checkStructuralEquality(Array.from(obj1.entries()), Array.from(obj2.entries()));
+  }
   return true;
 }
 
