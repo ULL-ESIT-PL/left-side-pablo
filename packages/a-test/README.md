@@ -3,6 +3,7 @@
 ## Structure
 The structure of this directory goes as follows:
 - `in` contains the file with the source code with the left-side assignment syntax.
+- `in_error` contains examples that should fail since they are not complying with the expected behaviour. 
 - `out` contains the code after being transformed with Babel and the left-side plugin.
 - `exec_out` contains the expected output when executing the transformed code with node.
 - `test-description.test.js` describes the logic of the tests.
