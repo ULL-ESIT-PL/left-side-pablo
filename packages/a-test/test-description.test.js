@@ -4,13 +4,14 @@ const input = fs.readdirSync("./in", {encoding: "utf-8"});
 const inputError = fs.readdirSync("./in_error", {encoding: "utf-8"});
 const execOut = new Set(fs.readdirSync("./exec_out", {encoding:"utf-8"}));
 
-const testExample = (testFile) => {
+const testExample = (testFile, expectCorrectOutput = true) => {
   //expect(execOut.has(testFile)).toBeTruthy();
   const output = execSync(`npx babel ./in/${testFile}`, {encoding: "utf-8"}).trim();
   const outputPath = `./out/${testFile}`;
   fs.writeFileSync(outputPath, output, {encoding: "utf-8"});
   let execResult = execSync(`node --no-warnings ${outputPath}`, {encoding: "utf-8"}).trim();
-  expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}).trim());
+  if (expectCorrectOutput)
+    expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}).trim());
 }
 describe("Core testing", () => {
   for (let testFile of input) {
@@ -19,6 +20,6 @@ describe("Core testing", () => {
 })
 describe("Error testing", () => {
   for (let testFile of inputError) {
-    test.failing(testFile, () => testExample(testFile));
+    test.failing(testFile, () => testExample(testFile, false));
   }
 })
