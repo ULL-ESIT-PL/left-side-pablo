@@ -11,7 +11,7 @@ class StoreMap {
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      this.objectStore.push([key, value, equalityFun]);
+      this.objectStore.push([structuredClone(key), value, equalityFun]);
       return;
     }
     this.store.set(key, value);
@@ -21,7 +21,7 @@ class StoreMap {
       for (let [currentKey, currentValue, equalityFun] of this.objectStore) {
         if (equalityFun(currentKey, key)) return currentValue;
       }
-      return false;
+      throw Error('This key was not cached. Key was: ' + key.toString());
     }
     return this.store.get(key);
   }

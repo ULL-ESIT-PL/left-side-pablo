@@ -16,6 +16,7 @@ const testExample = (testFile, expectCorrectOutput = true) => {
   if (expectCorrectOutput)
     expect(execResult).toBe(fs.readFileSync(`./exec_out/${testFile}`, {encoding: "utf-8"}).trim());
 }
+
 for (let subDirectory of input) {
   describe(subDirectory + " testing", () => {
     const directoryPath = inputBase + '/' + subDirectory;
