@@ -1,4 +1,4 @@
-// Simple struct-like class to represent an pair of values
+// Simple struct-like class to represent a pair of values
 class Pair {
   constructor(first, second) {
     this.first = first;
