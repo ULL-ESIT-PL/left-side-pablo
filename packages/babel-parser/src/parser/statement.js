@@ -1355,6 +1355,34 @@ export default class StatementParser extends ExpressionParser {
       return;
     }
 
+    if (this.eat(tt.atat)) {
+      // an assignable function
+      method.kind = "method";
+      this.parseClassPropertyName(method);
+
+      if (method.key.type === "PrivateName") {
+        // Private generator method
+        this.pushClassPrivateMethod(classBody, privateMethod, false, false, true);
+        return;
+      }
+
+      if (this.isNonstaticConstructor(publicMethod)) {
+        this.raise(publicMethod.key.start, Errors.ConstructorIsAssignable);
+      }
+
+      this.pushClassMethod(
+        classBody,
+        publicMethod,
+        false,
+        false,
+        /* isConstructor */ false,
+        false,
+        true
+      );
+
+      return;
+    }
+
     const containsEsc = this.state.containsEsc;
     const key = this.parseClassPropertyName(member);
     const isPrivate = key.type === "PrivateName";
@@ -1537,17 +1565,20 @@ export default class StatementParser extends ExpressionParser {
     isAsync: boolean,
     isConstructor: boolean,
     allowsDirectSuper: boolean,
+    isAssignable: boolean = false
   ): void {
+    let node = this.parseMethod(
+      method,
+      isGenerator,
+      isAsync,
+      isConstructor,
+      allowsDirectSuper,
+      "ClassMethod",
+      true,
+    );
+    node.isAssignable = isAssignable;
     classBody.body.push(
-      this.parseMethod(
-        method,
-        isGenerator,
-        isAsync,
-        isConstructor,
-        allowsDirectSuper,
-        "ClassMethod",
-        true,
-      ),
+      node
     );
   }
 
@@ -1556,6 +1587,7 @@ export default class StatementParser extends ExpressionParser {
     method: N.ClassPrivateMethod,
     isGenerator: boolean,
     isAsync: boolean,
+    isAssignable: boolean = false
   ): void {
     this.expectPlugin("classPrivateMethods", method.key.start);
 
@@ -1568,6 +1600,7 @@ export default class StatementParser extends ExpressionParser {
       "ClassPrivateMethod",
       true,
     );
+    node.isAssignable = isAssignable;
     classBody.body.push(node);
 
     const kind =
