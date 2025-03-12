@@ -48,8 +48,10 @@ export default function leftSidePlugin(babel) {
       },
       ClassMethod(path) {
         const node = path.node;
-        const [_, functionObjCall] = changeAssignableFunctionToValid(node);
-        path.replaceWith(types.classProperty(node.key, functionObjCall));
+        if (node.isAssignable) {
+          const [_, functionObjCall] = changeAssignableFunctionToValid(node);
+          path.replaceWith(types.classProperty(node.key, functionObjCall, null, null, false, node.static));
+        }
       },
       FunctionDeclaration(path) {
         const node = path.node;
