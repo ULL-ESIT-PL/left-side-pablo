@@ -6,5 +6,5 @@ class Schedule {
 
 Schedule.table(2) = "Class";
 
-console.log(Schedule.table(1))
-console.log(Schedule.table(2))
+console.log(Schedule.table(1)) // null
+console.log(Schedule.table(2)) // "Class"
