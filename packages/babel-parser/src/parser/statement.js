@@ -1070,7 +1070,7 @@ export default class StatementParser extends ExpressionParser {
       node.id = this.parseFunctionId();
     }
 
-    this.parseFunctionParams(node);
+    this.parseFunctionParams(node, false, !node.assignable);
 
     // For the smartPipelines plugin: Disable topic references from outer
     // contexts within the function body. They are permitted in function
@@ -1104,7 +1104,7 @@ export default class StatementParser extends ExpressionParser {
     return requireId || this.match(tt.name) ? this.parseIdentifier() : null;
   }
 
-  parseFunctionParams(node: N.Function, allowModifiers?: boolean): void {
+  parseFunctionParams(node: N.Function, allowModifiers?: boolean, allowSpreadable?: boolean): void {
     const oldInParameters = this.state.inParameters;
     this.state.inParameters = true;
 
@@ -1114,6 +1114,7 @@ export default class StatementParser extends ExpressionParser {
       charCodes.rightParenthesis,
       /* allowEmpty */ false,
       allowModifiers,
+      allowSpreadable
     );
 
     this.state.inParameters = oldInParameters;

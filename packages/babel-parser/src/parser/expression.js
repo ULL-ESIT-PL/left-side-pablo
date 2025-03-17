@@ -843,9 +843,10 @@ export default class ExpressionParser extends LValParser {
         ),
       );
 
-      if (this.eat(tt.atat)) {
-        elts["partialMatch"].add(currentArgInd);
-      }
+      // Partial matching idea
+      //if (this.eat(tt.atat)) {
+      //  elts["partialMatch"].add(currentArgInd);
+      //}
       ++currentArgInd;
     }
 

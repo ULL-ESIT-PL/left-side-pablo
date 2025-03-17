@@ -266,6 +266,7 @@ export default class LValParser extends NodeUtils {
     closeCharCode: $Values<typeof charCodes>,
     allowEmpty?: boolean,
     allowModifiers?: boolean,
+    allowSpreadable: boolean = false
   ): $ReadOnlyArray<Pattern | TSParameterProperty> {
     const elts: Array<Pattern | TSParameterProperty> = [];
     let first = true;
@@ -281,6 +282,9 @@ export default class LValParser extends NodeUtils {
       } else if (this.eat(close)) {
         break;
       } else if (this.match(tt.ellipsis)) {
+        if (!allowSpreadable) {
+          this.raise(this.state.start, Errors.SpreadInAssignable);
+        }
         elts.push(this.parseAssignableListItemTypes(this.parseRestBinding()));
         this.checkCommaAfterRest(closeCharCode);
         this.expect(close);
@@ -460,9 +464,9 @@ export default class LValParser extends NodeUtils {
       case "CallExpression":
         if (expr.arguments.length === 0) {
           this.raise(
-           expr.start, 
-           Errors.InvalidLhsBinding, 
-           (expr?.callee?.type === "Identifier")? `"${expr.callee.name}"`: "", 
+           expr.start,
+           Errors.InvalidLhsBinding,
+           (expr?.callee?.type === "Identifier")? `"${expr.callee.name}"`: "",
           );
         }
         this.checkLVal(
