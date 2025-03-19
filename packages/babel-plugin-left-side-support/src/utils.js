@@ -23,13 +23,20 @@
 function getAllKeyValues(obj1, obj2) {
   let valuesObj1 = [];
   let valuesObj2 = [];
-  const obj1Keys = Object.keys(obj1); // Reflect.ownKey gives non-enumerable keys.
-  const obj2Keys = new Set(Object.keys(obj2));
+  //const obj1Keys = Object.keys(obj1); // Reflect.ownKey gives non-enumerable keys.
+  const obj1Keys = Reflect.ownKeys(obj1);
+  //const obj2Keys = new Set(Object.keys(obj2));
+  const obj2Keys = new Set(Reflect.ownKeys(obj2));
   if (obj1Keys.length !== obj2Keys.size) return false;
   for (let key of obj1Keys) {
     if (!obj2Keys.has(key)) return null;
+    try {
       valuesObj1.push(obj1[key]);
       valuesObj2.push(obj2[key]);
+    } catch (err) {
+      // Do nothing, continue. This should help dealing with properties from prototypes
+      // TODO: Check if I can evaluate on the original object.
+    }
   }
   // Add prototypes for future comparison
   valuesObj1.push(Object.getPrototypeOf(obj1));
