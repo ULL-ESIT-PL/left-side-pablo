@@ -2,6 +2,7 @@ const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
 const {checkStructuralEquality} = require("./equality.js");
+const {equalityExtensionMap} = require('./equalityMap.js');
 
 class StoreMap {
   // Implements the cache based on Map
@@ -36,6 +37,7 @@ class StoreMap {
     }
     return this.store.has(key);
   }
+  static equalityExtensionMap = equalityExtensionMap;
 }
 
 class StoreObject {

@@ -1,5 +1,6 @@
 // File containing equality functions for object comparison.
 const {getAllKeyValues, isDataStructure} = require('./utils.js');
+const {equalityExtensionMap} = require('./equalityMap.js');
 
 // Full match between two objects
 function checkStructuralEquality(obj1, obj2) {
@@ -19,7 +20,7 @@ function checkStructuralEquality(obj1, obj2) {
     } else {
       checkedObjects.set(obj1, [obj2])
     }
-    if (obj1 === null || obj2 === null /*|| obj1 == undefined || obj2 == undefined*/) {
+    if (obj1 === null || obj2 === null || obj1 == undefined || obj2 == undefined) {
       if (obj1 === obj2) { // Both null or undefined
         continue;
       } else {
@@ -41,9 +42,14 @@ function checkStructuralEquality(obj1, obj2) {
     const [valuesObj1, valuesObj2] = allKeysValues;
     toCheckForEqualityObj1.push(...valuesObj1);
     toCheckForEqualityObj2.push(...valuesObj2);
-    if (isDataStructure(obj1)) { // Avoid Array since properties of an Array are already checked and creating another Array will eventually cause a stack error.
-      toCheckForEqualityObj1.push(Array.from(obj1.entries()).sort((a, b) => a[0] - b[0])); // Sorting to assert that the entries are in the same order in both objects.
-      toCheckForEqualityObj2.push(Array.from(obj2.entries()).sort((a, b) => a[0] - b[0]));
+    if (equalityExtensionMap.has(obj1.constructor)) {
+      try {
+        const [valuesObj1, valuesObj2] = equalityExtensionMap.get(obj1.constructor)(obj1, obj2)
+        toCheckForEqualityObj1.push(...valuesObj1);
+        toCheckForEqualityObj2.push(...valuesObj2);
+      } catch (err) {
+        return false; // Error when getting the second property
+      }
     }
   }
   return true;
