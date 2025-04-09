@@ -8,12 +8,12 @@
     "build": ""
   },
   "dependencies": {
-    "@ull-esit-pl/babel-plugin-left-side-plugin": "^1.0.0"
+    "@ull-esit-pl/babel-plugin-left-side-plugin": "^1.0.0",
+    "@ull-esit-pl/babel-plugin-left-side-support": "^1.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
     "@babel/preset-env":"^7.26.7",
-    
     "@babel/eslint-parser":"7.26.10"
   },
   "author": "Pablo Santana Gonzalez <alu0101480541@ull.edu.es>",

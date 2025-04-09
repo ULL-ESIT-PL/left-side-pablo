@@ -1,7 +1,8 @@
 const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
-const {checkStructuralEquality} = require("./equality.js");
+const hash = require("object-hash");
+const options = {respectType: false};
 const {equalityExtensionMap} = require('./equalityMap.js');
 
 class StoreMap {
@@ -40,6 +41,33 @@ class StoreMap {
   static equalityExtensionMap = equalityExtensionMap;
 }
 
+class StoreMapWithHash {
+  // Implements the cache based on Map
+  constructor() {
+    this.store = new Map();
+    this.objectStore = new Map();
+  }
+  set(key, value, equalityFun) {
+    if (key !== null && typeof key === "object") {
+      this.objectStore.set(hash(key, options), value);
+      return;
+    }
+    this.store.set(key, value);
+  }
+  get(key) {
+    if (key !== null && typeof key === "object") {
+      return this.objectStore.get(hash(key, options));
+    }
+    return this.store.get(key);
+  }
+  has(key) { // cache the hash of this keys since a "has" operation is followed by a "get"
+    if (key !== null && typeof key === "object") {
+      return this.objectStore.has(hash(key, options));
+    }
+    return this.store.has(key);
+  }
+}
+
 class StoreObject {
   // Implements the cache based on Object.create(null)
   constructor() {
@@ -53,7 +81,7 @@ class StoreObject {
   }
 }
 
-const CACHE_TYPE = StoreMap;
+let CACHE_TYPE = StoreMap;
 
 class FunctionObject extends CallableInstance {
   constructor(a) {
@@ -123,4 +151,4 @@ function functionObject(a) {
   return new FunctionObject(a);
 }
 
-module.exports = { functionObject, FunctionObject, CACHE_TYPE };
+module.exports = { functionObject, FunctionObject, CACHE_TYPE, StoreMap, StoreMapWithHash };

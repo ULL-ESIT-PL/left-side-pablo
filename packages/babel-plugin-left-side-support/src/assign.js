@@ -1,6 +1,14 @@
 const { checkPartialStructuralEquality, checkStructuralEquality } = require("./equality");
 const { functionObject, FunctionObject, CACHE_TYPE } = require("./function-object");
 
+/**
+ *
+ * @param {FunctionObject} f
+ * @param {Array[any]} cacheArgs
+ * @param {any} cacheValue
+ * @param {*} partialMatchingIndexes
+ * @returns
+ */
 function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
   //console.log('f', f.toString(), cacheArgs, cacheValue);
   //debugger;
