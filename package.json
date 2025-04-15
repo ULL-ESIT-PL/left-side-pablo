@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "npm run test --ws",
+    "test": "cd packages/a-test && jest",
     "build": "npm run build --ws",
     "clean": "rm -rf node_modules; rm -rf packages/**/node_modules; rm -rf packages/**/lib",
     "clean_build": "npm run clean; npm i; npm run build",
@@ -79,6 +79,7 @@
     ]
   },
   "workspaces": [
+    "packages/a-test",
     "packages/babel-parser",
     "packages/babel-plugin-left-side-plugin",
     "packages/babel-plugin-left-side-support"
