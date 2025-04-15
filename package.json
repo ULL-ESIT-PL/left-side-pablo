@@ -1,12 +1,23 @@
 {
-  "name": "babel",
+  "name": "@ull-esit-pl/left-side-pablo",
   "private": true,
   "license": "MIT",
   "scripts": {
     "test": "npm run test --ws",
     "build": "npm run build --ws",
     "clean": "rm -rf node_modules; rm -rf packages/**/node_modules; rm -rf packages/**/lib",
-    "clean_build": "npm run clean; npm i; npm run build"
+    "clean_build": "npm run clean; npm i; npm run build",
+    "prepublishOnly": "npm run build",
+    "publishpatch": "npm version patch -ws && npm publish -ws",
+    "publishminor": "npm version minor -ws && npm publish -ws",
+    "publishmajor": "npm version major -ws && npm publish -ws",
+    "publishactionpatch": "npm version patch -ws && npm run save && gh release create",
+    "publishactionminor": "npm version minor -ws && npm run save && gh release create",
+    "publishactionmajor": "npm version major -ws && npm run save && gh release create"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
