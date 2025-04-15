@@ -1,5 +1,5 @@
 .npmrc
-
+.env
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
