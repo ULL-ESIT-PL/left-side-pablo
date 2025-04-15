@@ -1,6 +1,6 @@
 {
   "name": "a-test",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Support plugin for the assignable functions",
   "main": "lib/plugin.js",
   "scripts": {
