@@ -11,9 +11,9 @@
     "publishpatch": "npm version patch -ws && npm publish -ws",
     "publishminor": "npm version minor -ws && npm publish -ws",
     "publishmajor": "npm version major -ws && npm publish -ws",
-    "publishactionpatch": "npm version patch -ws && npm run save && gh release create",
-    "publishactionminor": "npm version minor -ws && npm run save && gh release create",
-    "publishactionmajor": "npm version major -ws && npm run save && gh release create"
+    "publishactionpatch": "npm version patch -ws && npm run save && gh release create --target casiano-structural",
+    "publishactionminor": "npm version minor -ws && npm run save && gh release create --target casiano-structural",
+    "publishactionmajor": "npm version major -ws && npm run save && gh release create --target casiano-structural"
   },
   "publishConfig": {
     "access": "public",
