@@ -75,7 +75,9 @@
     ]
   },
   "workspaces": [
-    "packages/*"
+    "packages/babel-parser",
+    "packages/babel-plugin-left-side-plugin",
+    "packages/babel-plugin-left-side-support"
   ],
   "husky": {
     "hooks": {
