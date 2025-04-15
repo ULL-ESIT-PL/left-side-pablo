@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ULL-ESIT-PL/left-side-pablo/tree/casiano-structural",
+    "url": "git+https://github.com/ULL-ESIT-PL/left-side-pablo.git#casiano-structural",
     "directory": "packages/babel-parser"
   },
   "scripts": {
@@ -48,7 +48,7 @@
     "babel-plugin-add-import-extension": "^1.6.0"
   },
   "bin": {
-    "parser": "./bin/babel-parser.js"
+    "parser": "bin/babel-parser.js"
   },
   "gitHead": "df1dbf5d265ad3170234dff2e06cb385e08effc8"
 }

@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ULL-ESIT-PL/left-side-pablo/tree/casiano-structural"
+    "url": "git+https://github.com/ULL-ESIT-PL/left-side-pablo.git#casiano-structural"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
