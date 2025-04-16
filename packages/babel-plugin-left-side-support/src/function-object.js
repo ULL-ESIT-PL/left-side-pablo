@@ -12,7 +12,12 @@ class StoreMap {
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      const clone = structuredClone(key);
+      let clone = null;
+      try {
+        clone = structuredClone(key);
+      } catch (e) {
+        throw(`Error attempting to clone "${key.constructor.name}:"\n${e.message}`);
+      }
       Object.setPrototypeOf(clone, Object.getPrototypeOf(key));
       this.objectStore.push([clone, value, equalityFun]);
       return;
