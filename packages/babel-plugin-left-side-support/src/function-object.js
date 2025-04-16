@@ -2,8 +2,8 @@ const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
 const hash = require("object-hash");
-const options = {respectType: false};
-const {equalityExtensionMap} = require('./equalityMap.js');
+const options = { respectType: false };
+const { equalityExtensionMap } = require('./equalityMap.js');
 
 class StoreMap {
   // Implements the cache based on Map
@@ -13,7 +13,14 @@ class StoreMap {
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      const clone = structuredClone(key);
+      //const clone = structuredClone(key);
+      let clone = null;
+      try {
+        clone = structuredClone(key);
+      } catch (e) {
+        throw (`Error attempting to clone "${key.constructor.name}:"\n${e.message}`);
+      }
+
       Object.setPrototypeOf(clone, Object.getPrototypeOf(key));
       this.objectStore.push([clone, value, equalityFun]);
       return;
@@ -140,7 +147,7 @@ class FunctionObject extends CallableInstance {
     return this.cache.get(arg);
   }
 
-  [util.inspect.custom] (depths, opts) {
+  [util.inspect.custom](depths, opts) {
     if (debug) return this;
     return "<FUNCTION_OBJECT>";
   }
