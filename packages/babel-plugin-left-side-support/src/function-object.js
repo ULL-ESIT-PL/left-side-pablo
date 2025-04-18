@@ -57,10 +57,9 @@ class StoreMapWithHash {
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      if (this.semantic === "error") {
-        // Check if the data structure is infinite using structuredClone
+      if (this.semantic === "error") { // Check if the data structure is infinite using structuredClone
         try {
-          structuredClone(key);
+          structuredClone(key); // If it throws, the data structure contains functions
         } catch (e) {
           throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
         }
