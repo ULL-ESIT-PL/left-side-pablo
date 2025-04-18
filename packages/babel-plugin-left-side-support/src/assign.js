@@ -12,7 +12,7 @@ const { functionObject, FunctionObject, CACHE_TYPE } = require("./function-objec
 function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
   //console.log('f', f.toString(), cacheArgs, cacheValue);
   //debugger;
-  if (!f instanceof FunctionObject) {
+  if (!(f instanceof FunctionObject)) {
     throw new Error('TypeError: Cannot assign values to a normal function. It must be a FunctionObject');
   }
   partialMatchingIndexes = new Set(partialMatchingIndexes);

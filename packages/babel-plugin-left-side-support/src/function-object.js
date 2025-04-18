@@ -18,7 +18,7 @@ class StoreMap {
       try {
         clone = structuredClone(key);
       } catch (e) {
-        throw (`Error attempting to clone "${key.constructor.name}:"\n${e.message}`);
+        throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
       }
 
       Object.setPrototypeOf(clone, Object.getPrototypeOf(key));
@@ -56,6 +56,13 @@ class StoreMapWithHash {
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
+      // Check if the data structure is infinite using structuredClone
+      try {
+        structuredClone(key);
+      } catch (e) {
+        throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
+      }
+
       this.objectStore.set(hash(key, options), value);
       return;
     }
@@ -88,7 +95,8 @@ class StoreObject {
   }
 }
 
-let CACHE_TYPE = StoreMap;
+//let CACHE_TYPE = StoreMap;
+let CACHE_TYPE = StoreMapWithHash;
 
 class FunctionObject extends CallableInstance {
   constructor(a) {
