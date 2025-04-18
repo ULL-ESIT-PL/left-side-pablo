@@ -1,5 +1,5 @@
-// What if the assigned value changes?
-// Shall we choose reference or clone value?
+// What if the assigned value changes `a.x = 2;` after assignment `double(4) = a;`?
+// Shall we choose reference or clone value when implementing the assignment?
 // In JavaScript, when you assign an object to a variable, you are assigning a reference to that object.
 // This means that if you change the object through one variable,
 // the change will be reflected in all other variables that reference the same object.
