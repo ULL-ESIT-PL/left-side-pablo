@@ -1,8 +1,8 @@
 const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
-const hash = require("object-hash");
-const options = { respectType: false };
+const hash = require("object-hash");    // https://www.npmjs.com/package/object-hash
+const options = { respectType: false }; // const options = { respectType: false }; // Whether special type attributes (.prototype, .__proto__, .constructor) are hashed. default: true
 const { equalityExtensionMap } = require('./equalityMap.js');
 
 class StoreMap {
@@ -88,12 +88,11 @@ class StoreMapWithHash {
     return check(obj);
   }
 
-
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
       if (this.semantic === "error") { // Check if the data structure is infinite using structuredClone
         if (!this.isDeepJSONable(key)) {
-          throw (`Error attempting to assign to a function in a non JSON data structure`); // make the error more informative
+          throw (`Error attempting to assign to a function on a non JSON data structure argument`); // make the error more informative
         }
       }
 
