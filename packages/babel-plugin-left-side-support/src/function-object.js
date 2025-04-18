@@ -50,17 +50,20 @@ class StoreMap {
 
 class StoreMapWithHash {
   // Implements the cache based on Map
-  constructor() {
+  constructor(options) { //Other values for options.semantic can be "error" or "identity"
+    this.semantic = options?.semantic || "error";
     this.store = new Map();
     this.objectStore = new Map();
   }
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      // Check if the data structure is infinite using structuredClone
-      try {
-        structuredClone(key);
-      } catch (e) {
-        throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
+      if (this.semantic === "error") {
+        // Check if the data structure is infinite using structuredClone
+        try {
+          structuredClone(key);
+        } catch (e) {
+          throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
+        }
       }
 
       this.objectStore.set(hash(key, options), value);
