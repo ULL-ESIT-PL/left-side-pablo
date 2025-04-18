@@ -48,6 +48,7 @@ class StoreMap {
   static equalityExtensionMap = equalityExtensionMap;
 }
 
+
 class StoreMapWithHash {
   // Implements the cache based on Map
   constructor(options) { //Other values for options.semantic can be "error" or "identity"
@@ -55,13 +56,44 @@ class StoreMapWithHash {
     this.store = new Map();
     this.objectStore = new Map();
   }
+  // Function for deep checking JSON compatibility v0
+  isDeepJSONable(obj) {
+    const seen = new WeakSet();
+
+    function check(value) {
+      // Handle primitives
+      if (value === null) return true;
+
+      const type = typeof value;
+      if (type === 'string' || type === 'number' || type === 'boolean') return true;
+      if (type === 'undefined' || type === 'function' || type === 'symbol') return false;
+
+      // Check for circular references
+      if (seen.has(value)) return false;
+      seen.add(value);
+
+      // Handle arrays
+      if (Array.isArray(value)) {
+        return value.every(item => check(item));
+      }
+
+      // Handle objects
+      if (type === 'object') {
+        return Object.values(value).every(v => check(v));
+      }
+
+      return false;
+    }
+
+    return check(obj);
+  }
+
+
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
       if (this.semantic === "error") { // Check if the data structure is infinite using structuredClone
-        try {
-          structuredClone(key); // If it throws, the data structure contains functions
-        } catch (e) {
-          throw (`Error attempting to hash infinite data structure "${key.constructor.name}":\n${e.message}`);
+        if (!this.isDeepJSONable(key)) {
+          throw (`Error attempting to assign to a function in a non JSON data structure`); // make the error more informative
         }
       }
 
