@@ -1,5 +1,8 @@
-// TODO: Implement strategy pattern
-module.exports = function isDeepJSONable(obj) {
+// TODO: Implement strategy pattern and make this module extensible and pluggable so that the `isDeepJSONable` and `hash` functions can be replaced by other implementations.
+
+const hash = require("object-hash");    // https://www.npmjs.com/package/object-hash
+
+function isDeepJSONable(obj) {
   const seen = new WeakSet();
 
   function check(value) {
@@ -44,3 +47,4 @@ module.exports = function isDeepJSONable(obj) {
   return check(obj);
 }
 
+module.exports = { isDeepJSONable, hash }

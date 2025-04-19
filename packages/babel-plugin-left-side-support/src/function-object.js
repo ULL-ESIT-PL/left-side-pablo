@@ -1,10 +1,10 @@
 const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
-const hash = require("object-hash");    // https://www.npmjs.com/package/object-hash
 const options = { respectType: false }; // const options = { respectType: false }; // Whether special type attributes (.prototype, .__proto__, .constructor) are hashed. default: true
 const { equalityExtensionMap } = require('./equalityMap.js');
-const isDeepJSONable = require('./jsonable.js');
+const {isDeepJSONable, hash} = require('./jsonable.js');  // https://www.npmjs.com/package/object-hash
+
 class StoreMap {
   // Implements the cache based on Map
   constructor() {
