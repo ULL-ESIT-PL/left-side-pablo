@@ -65,7 +65,7 @@ class StoreMapWithHash {
       if (value === null) return true;
 
       const type = typeof value;
-      if (type === 'string' || type === 'number' || type === 'boolean') return true;
+      if (type === 'string' || type === 'number' || type === 'boolean' || type === 'bigint') return true;
       if (type === 'undefined' || type === 'function' || type === 'symbol') return false;
 
       // Check for circular references
