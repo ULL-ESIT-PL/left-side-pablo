@@ -10,6 +10,5 @@ function @@ foo(bar) {
 
 foo(bigint64) = 1;
 
-console.log(foo(bigint64)); //
-console.log(bigint64[0]);
+console.log(foo(bigint64)); // the hash library does not support typed arrays and throws an exception
 
