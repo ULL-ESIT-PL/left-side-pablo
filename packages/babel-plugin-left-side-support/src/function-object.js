@@ -59,9 +59,9 @@ class StoreMapWithHash {
 
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
-      if (this.semantic === "error") { // Check if the data structure is infinite using structuredClone
+      if (this.semantic === "error") { // Check if the data structure is "jsonable" using isDeepJSONable
         if (!isDeepJSONable(key)) {
-          throw (`Error attempting to assign to a function on a non JSON data structure argument`); // make the error more informative
+          throw (`Error attempting to assign to a function on a non supported data structure argument`); // make the error more informative
         }
       }
 

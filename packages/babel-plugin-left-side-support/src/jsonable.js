@@ -17,16 +17,17 @@ function isDeepJSONable(obj) {
     // Handle primitives
     if (value === null) return true;
 
+
     const type = typeof value;
     switch (type) {
       case 'string':
       case 'number':
       case 'boolean':
       case 'bigint': // Extended JSONable
+      case 'symbol':
         return true;
       case 'undefined':
       case 'function':
-      case 'symbol':
         return false;
     }
 
