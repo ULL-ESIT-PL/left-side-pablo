@@ -4,7 +4,7 @@ const util = require("util");
 const hash = require("object-hash");    // https://www.npmjs.com/package/object-hash
 const options = { respectType: false }; // const options = { respectType: false }; // Whether special type attributes (.prototype, .__proto__, .constructor) are hashed. default: true
 const { equalityExtensionMap } = require('./equalityMap.js');
-
+const isDeepJSONable = require('./jsonable.js');
 class StoreMap {
   // Implements the cache based on Map
   constructor() {
@@ -56,42 +56,11 @@ class StoreMapWithHash {
     this.store = new Map();
     this.objectStore = new Map();
   }
-  // Function for deep checking JSON compatibility v0
-  isDeepJSONable(obj) {
-    const seen = new WeakSet();
-
-    function check(value) {
-      // Handle primitives
-      if (value === null) return true;
-
-      const type = typeof value;
-      if (type === 'string' || type === 'number' || type === 'boolean' || type === 'bigint') return true;
-      if (type === 'undefined' || type === 'function' || type === 'symbol') return false;
-
-      // Check for circular references
-      if (seen.has(value)) return false;
-      seen.add(value);
-
-      // Handle arrays
-      if (Array.isArray(value)) {
-        return value.every(item => check(item));
-      }
-
-      // Handle objects
-      if (type === 'object') {
-        return Object.values(value).every(v => check(v));
-      }
-
-      return false;
-    }
-
-    return check(obj);
-  }
 
   set(key, value, equalityFun) {
     if (key !== null && typeof key === "object") {
       if (this.semantic === "error") { // Check if the data structure is infinite using structuredClone
-        if (!this.isDeepJSONable(key)) {
+        if (!isDeepJSONable(key)) {
           throw (`Error attempting to assign to a function on a non JSON data structure argument`); // make the error more informative
         }
       }
