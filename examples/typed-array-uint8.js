@@ -9,5 +9,5 @@ function @@ foo(bar) {
 
 foo(uint8arr) = 1;
 
-console.log(foo(uint8arr)); // The hash library does support uint8arr arrays
+console.log(foo(uint8arr)); // 1: The hash library does support uint8arr arrays
 
