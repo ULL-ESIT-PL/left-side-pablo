@@ -44,10 +44,16 @@ function isDeepJSONable(obj) {
     if (type === 'object') {
       //console.log(Object.values(value));
       switch (value?.constructor?. name) {
-         case 'Date', 'RegExp', 'Map', 'Set', 'WeakMap', 'WeakSet':
-          //console.log(value?.constructor?.name);
-          return true; // Exteded JSONable
-          default: return Object.values(value).every(v => check(v));
+         case 'Date':
+         case 'RegExp':
+           return true; // Exteded JSONable
+         case 'Map':
+         case 'Set':
+         case 'WeakMap':
+         case 'WeakSet':
+          return value.values().toArray().every(item => check(item));
+         default:
+           return Object.values(value).every(v => check(v));
       }
     }
 
