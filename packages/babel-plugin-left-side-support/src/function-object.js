@@ -4,6 +4,7 @@ const util = require("util");
 const hash = require("object-hash");
 const options = {respectType: false};
 const {equalityExtensionMap} = require('./equalityMap.js');
+const { normalizeArguments } = require("./utils.js");
 
 class StoreMap {
   // Implements the cache based on Map
@@ -45,26 +46,15 @@ class StoreMapWithHash {
   // Implements the cache based on Map
   constructor() {
     this.store = new Map();
-    this.objectStore = new Map();
   }
   set(key, value, equalityFun) {
-    if (key !== null && typeof key === "object") {
-      this.objectStore.set(hash(key, options), value);
-      return;
-    }
-    this.store.set(key, value);
+    this.store.set(hash(key, options), value);
   }
-  get(key) {
-    if (key !== null && typeof key === "object") {
-      return this.objectStore.get(hash(key, options));
-    }
-    return this.store.get(key);
+  get(key, numParams) {
+    return this.store.get(hash(key, options));
   }
-  has(key) { // cache the hash of this keys since a "has" operation is followed by a "get"
-    if (key !== null && typeof key === "object") {
-      return this.objectStore.has(hash(key, options));
-    }
-    return this.store.has(key);
+  has(key, numParams) { // cache the hash of this keys since a "has" operation is followed by a "get"
+    return this.store.has(hash(key, options));
   }
 }
 
@@ -81,7 +71,7 @@ class StoreObject {
   }
 }
 
-let CACHE_TYPE = StoreMap;
+let CACHE_TYPE = StoreMapWithHash;
 
 class FunctionObject extends CallableInstance {
   constructor(a) {
@@ -89,26 +79,37 @@ class FunctionObject extends CallableInstance {
     // method.
     super("_call");
     this.rawFunction = a;
-    //this.cache = new StoreObject();
     this.cache = new CACHE_TYPE();
     this.maxParamNum = a.length;
-    this.function = function (...args) {
-      let currentCache = this.cache;
-      for (let i = 0; i < this.maxParamNum; ++i) {
-        const arg = args[i];
-        if (currentCache instanceof CACHE_TYPE && currentCache.has(arg)) {
-          if (debug) console.log(`Cached value! ${currentCache.get(arg)}`);
-          if (i + 1 === this.maxParamNum) {
-            return currentCache.get(arg); // Value in cache, return it.
+    if (this.cache.constructor === StoreMap) {
+      this.function = function (...args) {
+        let currentCache = this.cache;
+        for (let i = 0; i < this.maxParamNum; ++i) {
+          const arg = args[i];
+          if (currentCache instanceof CACHE_TYPE && currentCache.has(arg)) {
+            if (debug) console.log(`Cached value! ${currentCache.get(arg)}`);
+            if (i + 1 === this.maxParamNum) {
+              return currentCache.get(arg); // Value in cache, return it.
+            }
+            currentCache = currentCache.get(arg);
+          } else {
+            break; // Default to the original rawFunction.
           }
-          currentCache = currentCache.get(arg);
-        } else {
-          break; // Default to the original rawFunction.
         }
+        //console.log(currentFunctionObject)
+        return this.rawFunction(...args);
+      };
+    } else if (this.cache.constructor === StoreMapWithHash) {
+      this.function = function (...args) {
+        const normalizedArgs = normalizeArguments(args, this.maxParamNum);
+        if (this.cache.has(normalizedArgs, this.maxParamNum)) {
+          return this.cache.get(normalizedArgs, this.maxParamNum);
+        }
+        return this.rawFunction(...args);
       }
-      //console.log(currentFunctionObject)
-      return this.rawFunction(...args);
-    };
+    } else {
+      throw new Error(`TypeError: Unknown cache type ${this.cache.constructor.name}`);
+    }
   }
 
   _call(...args) {

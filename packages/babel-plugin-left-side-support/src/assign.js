@@ -1,55 +1,59 @@
 const { checkPartialStructuralEquality, checkStructuralEquality } = require("./equality");
-const { functionObject, FunctionObject, CACHE_TYPE } = require("./function-object");
+const { functionObject, FunctionObject, CACHE_TYPE, StoreMap, StoreMapWithHash } = require("./function-object");
+const { normalizeArguments } = require("./utils");
 
-/**
- *
- * @param {FunctionObject} f
- * @param {Array[any]} cacheArgs
- * @param {any} cacheValue
- * @param {*} partialMatchingIndexes
- * @returns
- */
-function assign(f, cacheArgs, cacheValue, partialMatchingIndexes) {
+const ASSIGN_FUNCTION_MAP = new Map();
+ASSIGN_FUNCTION_MAP.set(StoreMap, (f, cacheArgs, cacheValue) => {
   //console.log('f', f.toString(), cacheArgs, cacheValue);
   //debugger;
-  if (!f instanceof FunctionObject) {
-    throw new Error('TypeError: Cannot assign values to a normal function. It must be a FunctionObject');
-  }
-  partialMatchingIndexes = new Set(partialMatchingIndexes);
   const maxParamNum = f.maxParamNum;
   let currentCache = f.cache;
   for (let i = 0; i < maxParamNum; i++) {
     const cacheArgument = cacheArgs[i];
-    /* It is a possibility to assign both null and undefined argument values.
-    if (cacheArgument == null) {
-      const error = new Error(
-        "Invalid null argument on left side of assignment",
-      );
-      throw error;
-    }*/
     const next = i + 1;
-    const equalityFun = partialMatchingIndexes.has(i) ? checkPartialStructuralEquality : checkStructuralEquality;
     if (next == maxParamNum) {
       // the end
       //console.log(cacheArgs)
-      currentCache.set(cacheArgument, cacheValue, equalityFun);
+      currentCache.set(cacheArgument, cacheValue, checkStructuralEquality);
       return cacheValue;
     }
     // If there are more arguments
     //console.log(f)
     let auxCache;
     if (!currentCache.has(cacheArgument)) {
-      auxCache = new CACHE_TYPE();
-      currentCache.set(cacheArgument, auxCache, equalityFun);
+      auxCache = new StoreMap();
+      currentCache.set(cacheArgument, auxCache, checkStructuralEquality);
     } else {
       auxCache = currentCache.get(cacheArgument);
     }
-    //functionObject(f.rawFunction ? f.rawFunction : f);
     //console.log(f(cacheArgument))
-    //f.setCache(cacheArgument, auxF);
     //console.error(`assign f.cache["${cacheArgument}"] = ${auxF}`);
     currentCache = auxCache;
   }
+});
+
+ASSIGN_FUNCTION_MAP.set(StoreMapWithHash, (f, cacheArgs, cacheValue) => {
+  // Adjusting arguments so it is always the same
+  const normalizedArgs = normalizeArguments(cacheArgs, f.maxParamNum);
+  f.setCache(normalizedArgs, cacheValue);
+});
+
+/**
+ *
+ * @param {FunctionObject} f
+ * @param {Array[any]} cacheArgs
+ * @param {any} cacheValue
+ * @returns
+ */
+function assign(f, cacheArgs, cacheValue) {
+  if (!(f instanceof FunctionObject)) {
+    throw new Error('TypeError: Cannot assign values to a normal function. It must be a FunctionObject');
+  }
+  const ASSIGN_FUNCTION = ASSIGN_FUNCTION_MAP.get(f.cache.constructor);
+  if (!ASSIGN_FUNCTION) {
+    throw new Error(`TypeError: Unexpected cache type ${f.cache.constructor.name}`);
+  }
+  ASSIGN_FUNCTION(f, cacheArgs, cacheValue);
 }
 
 module.exports = { assign };

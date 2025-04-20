@@ -35,6 +35,25 @@ function getAllKeyValues(obj1, obj2) {
   return [valuesObj1, valuesObj2];
 }
 
+/**
+ * Fills the given array with undefined.
+ * @param {array} arr The array to be filled
+ * @param {number} numOfArgs The wanted number of arguments
+ * @returns {array} The array 
+ */
+function normalizeArguments(arr, numOfArgs) {
+  const argsDiff = numOfArgs - arr.length;
+  if (argsDiff < 0) { // Over the limit of parameters
+    return arr.slice(0, numOfArgs);
+  }
+  let result = arr.slice();
+  for (let i = 0; i < argsDiff; ++i) {
+    result.push(undefined);
+  }
+  return result;
+}
+
 module.exports = {
   getAllKeyValues,
+  normalizeArguments
 }
