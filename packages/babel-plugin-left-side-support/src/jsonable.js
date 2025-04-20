@@ -51,6 +51,7 @@ function isDeepJSONable(obj) {
          case 'Set':
          case 'WeakMap':
          case 'WeakSet':
+           //console.log("map or set", value?.constructor?.name);
           return value.values().toArray().every(item => check(item));
          default:
            return Object.values(value).every(v => check(v));
