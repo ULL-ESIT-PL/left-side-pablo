@@ -99,6 +99,7 @@ class StoreObject {
 
 //let CACHE_TYPE = StoreMap;
 let CACHE_TYPE = StoreMapWithHash;
+let POLICY = process.env.LEFT_SIDE_POLICY || "error"; // "error", "none", "identity", ...to make the cache parametric
 
 class FunctionObject extends CallableInstance {
   constructor(a) {
@@ -107,7 +108,7 @@ class FunctionObject extends CallableInstance {
     super("_call");
     this.rawFunction = a;
     //this.cache = new StoreObject();
-    this.cache = new CACHE_TYPE();
+    this.cache = new CACHE_TYPE({semantic: POLICY});
     this.maxParamNum = a.length;
     this.function = function (...args) {
       let currentCache = this.cache;
