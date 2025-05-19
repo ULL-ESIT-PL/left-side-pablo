@@ -4,7 +4,7 @@ const {
 } = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let firstDate = new Date(2024, 0, 25);
 let firstDateCopy = new Date(2024, 0, 25);
 let secondDate = new Date(2024, 0, 24);

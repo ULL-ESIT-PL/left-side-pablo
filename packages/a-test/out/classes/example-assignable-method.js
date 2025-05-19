@@ -5,7 +5,7 @@ const {
 class EventManager {
   events = functionObject(function (key) {
     return null;
-  });
+  }, [undefined]);
   otherMethod() {
     return "some value";
   }

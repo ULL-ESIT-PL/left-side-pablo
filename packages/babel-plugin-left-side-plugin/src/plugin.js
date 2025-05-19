@@ -21,7 +21,16 @@ function changeAssignableFunctionToValid(node) {
     node.params,
     node.body,
   );
-  const callExpression = types.callExpression(identifier, [funAsExpr]);
+  let defaultParams = []
+  for (let param of node.params) {
+    if (param.type === "AssignmentPattern") {
+      defaultParams.push(param.right); // Assign the user-defined default value
+    } else {
+      defaultParams.push(types.identifier("undefined")); // Implicit undefined value
+    }
+  }
+  defaultParams = types.arrayExpression(defaultParams);
+  const callExpression = types.callExpression(identifier, [funAsExpr, defaultParams]);
   return [funId, callExpression];
 }
 

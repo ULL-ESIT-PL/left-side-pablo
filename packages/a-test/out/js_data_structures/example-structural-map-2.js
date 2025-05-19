@@ -4,7 +4,7 @@ const {
 } = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 1;
-});
+}, [undefined]);
 let map1 = new Map();
 map1.set("key1", "value1");
 map1.set("key2", "value2");

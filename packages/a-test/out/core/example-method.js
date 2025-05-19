@@ -5,7 +5,7 @@ const {
 let a = {
   foo: functionObject(function (a) {
     return a;
-  })
+  }, [undefined])
 };
 assign(a.foo, ["bar"], "fighter", []);
 console.log(a.foo("x")); // x

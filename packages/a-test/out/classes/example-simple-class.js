@@ -14,7 +14,7 @@ let sameSamplePair = new Pair(1, 2); // Structurally the same pair
 let differentPair = new Pair(3, 4);
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 assign(foo, [samplePair], 1, []);
 console.log(foo(samplePair));
 console.log(foo(sameSamplePair));

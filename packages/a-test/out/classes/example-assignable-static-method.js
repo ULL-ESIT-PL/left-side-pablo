@@ -5,7 +5,7 @@ const {
 class Schedule {
   static table = functionObject(function (day) {
     return null;
-  });
+  }, [undefined]);
 }
 ;
 assign(Schedule.table, [2], "Class", []);
