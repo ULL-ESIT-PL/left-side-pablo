@@ -11,17 +11,17 @@
 
 
 This is a fork of [tanhauhau/babel](https://github.com/tanhauhau/babel) which is a fork of the original Babel repo at version 7.10.  
-The packages [published in the GitHub registry](https://github.com/orgs/ULL-ESIT-PL/packages) from branch [pablo-tfg](https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg) are being written by Pablo Santana inside the GitHub organization [ull-esit-pl](https://github.com/ULL-ESIT-PL/) organization as part of his Bachellor Thesis (Trabajo Fin de Grado). 
+The fork is being written by Pablo Santana inside the GitHub organization [ull-esit-pl](https://github.com/ULL-ESIT-PL/) as part of his Bachellor Thesis (Trabajo Fin de Grado).
 
-These packages extend the JavaScript language with a new kind of functions. The packages are:
+The fork is formed by three packages that extend the JavaScript language with a new kind of functions. The packages are:
 
-- The JS parser modified: [@ull-esit-pl/parser-left-side](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/parser-left-side)
-- The AST transformation plugin: [@ull-esit-pl/babel-plugin-left-side-plugin ](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-plugin) 
-- The support library: [@ull-esit-pl/babel-plugin-left-side-support](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-support) 
+- The JS parser modified: [parser-left-side](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/parser-left-side)
+- The AST transformation plugin: [babel-plugin-left-side](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-plugin) 
+- The support library: [babel-plugin-left-side-support](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-support) 
 
 ### The proposed Syntax and Semantic
 
-These packages extend JS  with a new kind of functions, the `@@` functions (we lack by now of a name for this class of functions: *assignable*? *pure*?). Here is an example of declaring an *assignable* function:
+These packages extend JS with a new kind of functions, the *assignable functions*. Here is an example of a declaration:
 
 ```js 
 function @@ foo(bar) {
@@ -48,9 +48,7 @@ console.log(foo(10)); //  5
 console.log(foo(5));  // 10
 ```
 
-You can fork the example repo [ULL-ESIT-PL/babel-left-side-npm-test](https://github.com/ULL-ESIT-PL/babel-left-side-npm-test) and test the packages in your own workspace or follow the instructions below.
-
-## Install
+## Installation
 
 Here are the node and npm versions I have used to test the packages:
 
@@ -61,36 +59,24 @@ v20.5.0
 9.8.0
 ```
 
-These packages use the GitHub registry instead of the npm registry. Therefore, remember
-to set the registry entry in your `.npmrc` file:
-
-```bash
-➜  babel-npm-test git:(main) ✗ cat ~/.npmrc | grep '@ull-esit-pl:'
-@ull-esit-pl:registry=https://npm.pkg.github.com
-```
-
-or set an entry `registry` in your `package.json` file:
-
-```bash
-➜  babel-npm-test git:(main) ✗ jq '.registry' package.json 
-"https://npm.pkg.github.com"
-```
-
-Then you can proceed to install the packages:
+Install Babel. The extension was developed using Babel 7.10 but newer versions have worked so far.
 
 ```
-npm i -D @babel/cli@7.10 @ull-esit-pl/babel-plugin-left-side-plugin @ull-esit-pl/babel-plugin-left-side-support @ull-esit-pl/parser-left-side 
+npm i -D @babel/cli
+```
+
+Install the package `babel-left-side`
+
+```
+npm i -D babel-left-side 
 ```
 
 Your package.json `devDependencies` section will look similar to this:
 
-`➜  babel-left-side-npm-test git:(main) ✗ jq '.devDependencies' package.json`
 ```json
 {
-  "@babel/cli": "^7.10.1",
-  "@ull-esit-pl/babel-plugin-left-side-plugin": "latest",
-  "@ull-esit-pl/babel-plugin-left-side-support": "latest",
-  "@ull-esit-pl/parser-left-side": "latest"
+  "@babel/cli": "latest",
+  "babel-plugin-left-side": "latest",
 }
 ```
 
@@ -103,7 +89,7 @@ To compile the example above add a `babel.config.js` to your workspace folder:
 ```js
 module.exports = {
   "plugins": [
-    "@ull-esit-pl/babel-plugin-left-side-plugin"
+    "babel-plugin-left-side-plugin"
   ],
 }
 ```
@@ -111,7 +97,7 @@ module.exports = {
 and then compile it using the installed packages:
 
 ```js
-➜  babel-npm-test npx babel  example.js
+➜  babel-npm-test npx babel example.js
 ```
 This will output the compiled code to the console:
 
@@ -119,10 +105,10 @@ This will output the compiled code to the console:
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return bar * 2;
-});
+}, [undefined]);
 assign(foo, [10], 5);
 console.log(foo(10));
 console.log(foo(5));

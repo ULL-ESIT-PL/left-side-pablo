@@ -5,7 +5,7 @@ module.exports = {
         return parse(code.opts);
       }
     },*/
-    "@ull-esit-pl/babel-plugin-left-side-plugin",
+    "babel-plugin-left-side",
   ]
   /*,
   presets: [

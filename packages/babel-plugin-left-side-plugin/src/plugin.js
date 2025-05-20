@@ -1,11 +1,11 @@
-import * as parser from "@ull-esit-pl/parser-left-side";
+import * as parser from "parser-left-side";
 //const parser = require("@ull-esit-pl/parser-left-side");
 import * as types from "@babel/types"
 //const types = require("@babel/types");
 import _template from "@babel/template";
 const template = _template.default;
 const SUPPORT_TEMPLATE = template(
-  'const {assign, functionObject} = require("@ull-esit-pl/babel-plugin-left-side-support");',
+  'const {assign, functionObject} = require("babel-plugin-left-side-support");',
 )();
 
 // To avoid repeating code in FunctionDeclaration and FunctionExpression. Transforms the assignable function syntax to valid JS.

@@ -48,7 +48,68 @@ function normalizeArguments(arr, defaultValues) {
   return arr.concat(defaultValues.slice(arr.length));
 }
 
+/**
+ * Function to validate the key for the cache
+ * A key is considered valid if doesn't contain cycles or functions
+ * @param {Object}
+ * @returns True if it is a valid key, false otherwise
+ */
+function isDeepJSONable(key) {
+  const seen = new Set();
+
+  function check(value) {
+    // Handle primitives
+    if (value === null) return true;
+
+
+    const type = typeof value;
+    switch (type) {
+      case 'string':
+      case 'number':
+      case 'boolean':
+      case 'bigint':
+      case 'undefined':
+      case 'symbol':
+        return true;
+      case 'function':
+        return false;
+    }
+
+    // Check for circular references
+    if (seen.has(value)) return false;
+    seen.add(value);
+
+    // Handle arrays
+    if (Array.isArray(value)) {
+      return value.every(item => check(item));
+    }
+
+    // Handle objects
+    if (type === 'object') {
+      //console.log(Object.values(value));
+      switch (value?.constructor?. name) {
+         case 'Date':
+         case 'RegExp':
+           return true; // Exteded JSONable
+         case 'Map':
+         case 'Set':
+         case 'WeakMap':
+         case 'WeakSet':
+           //console.log("map or set", value?.constructor?.name);
+          return value.values().toArray().every(item => check(item));
+         default:
+           return Object.values(value).every(v => check(v));
+      }
+    }
+
+    return false;
+  }
+
+  return check(key);
+}
+
 module.exports = {
   getAllKeyValues,
-  normalizeArguments
+  normalizeArguments,
+  isDeepJSONable
 }

@@ -1,7 +1,7 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 class Schedule {
   static table = functionObject(function (day) {
     return null;

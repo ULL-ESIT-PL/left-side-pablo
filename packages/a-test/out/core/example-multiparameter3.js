@@ -1,7 +1,7 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (a, b, c) {
   return a + b + c;
 }, [undefined, undefined, undefined]);

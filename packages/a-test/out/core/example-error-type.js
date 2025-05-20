@@ -1,7 +1,7 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 0;
 }, [undefined]); // Error.prototype.name and Error.message are not enumerable, but should be compared anyways.

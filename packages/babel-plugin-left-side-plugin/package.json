@@ -1,6 +1,6 @@
 {
-  "name": "@ull-esit-pl/babel-plugin-left-side-plugin",
-  "version": "1.0.2",
+  "name": "babel-plugin-left-side",
+  "version": "1.0.0",
   "description": "Support plugin for the assignable functions",
   "main": "src/plugin.js",
   "scripts": {
@@ -8,17 +8,13 @@
     "build": ""
   },
   "dependencies": {
-    "@ull-esit-pl/parser-left-side": "^1.0.0",
-    "@ull-esit-pl/babel-plugin-left-side-support": "^1.0.0"
+    "parser-left-side": "^1.0.0",
+    "babel-plugin-left-side-support": "^1.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg",
+    "url": "https://github.com/ULL-ESIT-PL/left-side-pablo",
     "directory": "packages/babel-plugin-left-side-plugin"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
   },
   "author": "Pablo Santana Gonzalez <alu0101480541@ull.edu.es>",
   "license": "ISC",

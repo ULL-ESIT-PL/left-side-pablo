@@ -1,8 +1,9 @@
-const {functionObject, assign, StoreMap, StoreMapWithHash} = require("@ull-esit-pl/babel-plugin-left-side-support")
-let {CACHE_TYPE} = require("@ull-esit-pl/babel-plugin-left-side-support");
+const {functionObject, assign, StoreMap, StoreMapWithHash} = require("babel-plugin-left-side-support")
+let {CACHE_TYPE} = require("babel-plugin-left-side-support");
 // TODO: Do a battery of sizes, design a test with more complex objects like objects with various levels of depth, maps and sets.
 // There is a pattern in these tests, see the comments in assignTest. Maybe doing a structure that allows for quick changes.
-const TEST_SIZE = 50_000;
+const TEST_SIZES = [10, 100, 1000, 5_000, 10_000];
+let TEST_SIZE = undefined;
 
 const assignTest = (functionObj) => {
   console.log(`Time for ${TEST_SIZE} assignations:`);
@@ -43,6 +44,11 @@ const mainTest = (cacheType) => {
   searchTest(functionObj);
 }
 
-mainTest(StoreMapWithHash);
-console.log()
-mainTest(StoreMap);
+
+for (let size of TEST_SIZES) {
+  TEST_SIZE = size;
+  mainTest(StoreMapWithHash);
+  console.log()
+  mainTest(StoreMap);
+  console.log()
+}

@@ -1,7 +1,7 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (param1, param2 = 1) {
   return 0;
 }, [undefined, 1]); // Implicitly assignment to foo(0, 1)

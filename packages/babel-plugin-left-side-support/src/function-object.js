@@ -4,7 +4,7 @@ const util = require("util");
 const hash = require("object-hash");
 const options = {respectType: false, algorithm: "passthrough"};
 const {equalityExtensionMap} = require('./equalityMap.js');
-const { normalizeArguments } = require("./utils.js");
+const { normalizeArguments, isDeepJSONable } = require("./utils.js");
 
 class StoreMap {
   // Implements the cache based on Map
@@ -13,7 +13,13 @@ class StoreMap {
     this.objectStore = [];
   }
   set(key, value, equalityFun) {
+    if (typeof key === "function") {
+      throw new Error("A function can't be a key in an assignable function");
+    }
     if (key !== null && typeof key === "object") {
+      if (!isDeepJSONable(key)) {
+        throw new Error("The given key contains either a cycle or a function. Key was " + key.toString());
+      }
       const clone = structuredClone(key);
       Object.setPrototypeOf(clone, Object.getPrototypeOf(key));
       this.objectStore.push([clone, value, equalityFun]);
@@ -48,6 +54,12 @@ class StoreMapWithHash {
     this.store = new Map();
   }
   set(key, value, equalityFun) {
+    if (typeof key === "function") {
+      throw new Error("A function can't be a key in an assignable function");
+    }
+    if (!isDeepJSONable(key)) {
+      throw new Error("The given key contains either a cycle or a function. Key was " + key.toString());
+    }
     this.store.set(hash(key, options), value);
   }
   get(key, numParams) {
