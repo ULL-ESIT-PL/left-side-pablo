@@ -1053,6 +1053,14 @@ export default class StatementParser extends ExpressionParser {
     node.generator = this.eat(tt.star);
     node.assignable = this.eat(tt.atat);
 
+    if (node.assignable && isAsync) {
+      this.raise(this.state.start, Errors.AsyncAssignableFunction);
+    }
+
+    if (node.assignable && node.generator) {
+      this.raise(this.state.start, Errors.GeneratorAssignableFunction);
+    }
+
     if (isStatement) {
       node.id = this.parseFunctionId(requireId);
     }

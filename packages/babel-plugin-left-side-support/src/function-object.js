@@ -86,7 +86,7 @@ class FunctionObject extends CallableInstance {
         let currentCache = this.cache;
         for (let i = 0; i < this.maxParamNum; ++i) {
           const arg = args[i];
-          if (currentCache instanceof CACHE_TYPE && currentCache.has(arg)) {
+          if (currentCache instanceof this.cache.constructor && currentCache.has(arg)) {
             if (debug) console.log(`Cached value! ${currentCache.get(arg)}`);
             if (i + 1 === this.maxParamNum) {
               return currentCache.get(arg); // Value in cache, return it.
