@@ -17,7 +17,7 @@ class Second extends First {
 ;
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let a = new First();
 let b = new Second();
 assign(foo, [a], 1, []);

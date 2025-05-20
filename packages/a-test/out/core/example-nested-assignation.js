@@ -5,8 +5,8 @@ const {
 const foo = functionObject(function (a) {
   return functionObject(function (b) {
     return a + b;
-  });
-});
+  }, [undefined]);
+}, [undefined]);
 assign(foo, [5], 13, []);
 assign(foo(6), [2], "Another value", []);
 console.log(foo(2)(3)); // 5

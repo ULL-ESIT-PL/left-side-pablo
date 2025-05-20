@@ -4,7 +4,7 @@ const {
 } = require("@ull-esit-pl/babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let firstObj = {
   someProperty: "someValue"
 };

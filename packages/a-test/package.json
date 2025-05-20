@@ -5,7 +5,8 @@
   "main": "lib/plugin.js",
   "scripts": {
     "test": "npx jest",
-    "build": ""
+    "build": "",
+    "benchmark": "node --max-old-space-size=8192 benchmark/cache_types.js"
   },
   "dependencies": {
     "@ull-esit-pl/babel-plugin-left-side-plugin": "^1.0.0",
