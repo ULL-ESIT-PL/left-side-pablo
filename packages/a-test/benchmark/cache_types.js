@@ -37,18 +37,17 @@ const searchTest = (functionObj) => {
 
 const mainTest = (cacheType) => {
   CACHE_TYPE = cacheType;
-  console.log(`Tests for ${cacheType.name}:`);
   const functionObj = functionObject(function (param) {return 0;}, []);
   assignTest(functionObj);
   console.log()
   searchTest(functionObj);
 }
 
-
-for (let size of TEST_SIZES) {
-  TEST_SIZE = size;
-  mainTest(StoreMapWithHash);
-  console.log()
-  mainTest(StoreMap);
-  console.log()
+for (let cache of [StoreMap, StoreMapWithHash]) {
+  console.log(`Tests for ${cache.name}:`);
+  for (let size of TEST_SIZES) {
+    TEST_SIZE = size;
+    mainTest(cache);
+    console.log()
+  }
 }
