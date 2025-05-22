@@ -1,6 +1,6 @@
 {
   "name": "parser-left-side",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "A JavaScript parser",
   "author": "Sebastian McKenzie <sebmck@gmail.com>",
@@ -33,13 +33,15 @@
   "engines": {
     "node": ">=6.0.0"
   },
+  "dependencies": {
+    "charcodes": "^0.2.0"
+  },
   "devDependencies": {
     "@babel/code-frame": "^7.10.1",
     "@babel/helper-fixtures": "^7.10.1",
     "@babel/helper-validator-identifier": "^7.10.1",
     "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.7",
-    "charcodes": "^0.2.0",
     "@babel/preset-flow": "^7.25.9",
     "babel-plugin-add-import-extension": "^1.6.0"
   },

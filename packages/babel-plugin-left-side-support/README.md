@@ -18,9 +18,9 @@ The fork is being written by Pablo Santana inside the GitHub organization [ull-e
 
 The fork is formed by three packages that extend the JavaScript language with a new kind of functions. The packages are:
 
-- The JS parser modified: [parser-left-side](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/parser-left-side)
-- The AST transformation plugin: [babel-plugin-left-side](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-plugin) 
-- The support library: [babel-plugin-left-side-support](https://github.com/orgs/ULL-ESIT-PL/packages/npm/package/babel-plugin-left-side-support) 
+- The JS parser modified: [parser-left-side](https://www.npmjs.com/package/parser-left-side)
+- The AST transformation plugin: [babel-plugin-left-side](https://www.npmjs.com/package/babel-plugin-left-side}) 
+- The support library: [babel-plugin-left-side-support](https://www.npmjs.com/package/babel-plugin-left-side-support) 
 
 ### The proposed Syntax and Semantic
 
@@ -50,6 +50,52 @@ foo(10) = 5;
 console.log(foo(10)); //  5
 console.log(foo(5));  // 10
 ```
+
+### Features
+- Multiple parameters assignment (no spread operator `...`).
+- Allows default parameters.
+```js
+function @@ foo(param1, param2 = 1) {
+  return 0;
+}
+
+// Implicit assignment to foo(0, 1)
+foo(0) = 1
+console.log(foo(0)); // 1
+console.log(foo(0, 1)); // 1
+// Explicit assignment to foo(1, 1)
+foo(1, 1) = 2;
+console.log(foo(1)); // 2
+console.log(foo(1, 1)); // 2
+```
+- Also works with methods and static methods.
+```js
+class Foo() {
+  @@ assignableMethod(param) {
+    // ...
+  }
+  static @@ assignableStaticMethod(param) {
+    // ...
+  }
+}
+```
+- Structural equality semantics for objects (doesn't take into consideration the prototype or constructor and at the moment throws exceptions when receiving functions or objects containing cycles).
+```js
+function @@ foo(bar) {
+  return bar;
+}
+
+let obj1 = {a: "some", b: "thing"};
+let obj2 = {a: "some", b: "thing"};
+foo(obj1) = "some other value";
+console.log(foo(obj2)); // "some other value"
+// Also works with Map, Set and RegExp!
+let set1 = new Set([1, 2, 3]);
+let set2 = new Set([1, 2, 3]);
+foo(set1) = "some other value";
+console.log(foo(set2)); // "some other value"
+```
+
 
 ## Installation
 
@@ -142,7 +188,8 @@ or alternatively, use the `-o` option to save the output to a file and then run 
 
 - Our tutorial on babel: https://github.com/ULL-ESIT-PL/babel-learning/tree/main
 - Section of the former tutorial describing how the packages were published: https://github.com/ULL-ESIT-PL/babel-learning/blob/main/doc/building-publishing.md
-- Branch pablo-tfg with the actual code implementation: https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg
+- Branch object-hash with the actual code implementation: https://github.com/ULL-ESIT-PL/left-side-pablo/tree/object-hash
+- Branch pablo-tfg with the earlier code implementation: https://github.com/ULL-ESIT-PL/babel-tanhauhau/tree/pablo-tfg
 - The original idea of the project is based on what is explained in this draft: https://www.authorea.com/users/147476/articles/1235078-function-expressions-on-the-left-side-of-assignments (submitted now to Science of Computer Programming
  journal)
 
