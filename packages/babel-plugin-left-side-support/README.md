@@ -19,7 +19,7 @@ The fork is being written by Pablo Santana inside the GitHub organization [ull-e
 The fork is formed by three packages that extend the JavaScript language with a new kind of functions. The packages are:
 
 - The JS parser modified: [parser-left-side](https://www.npmjs.com/package/parser-left-side)
-- The AST transformation plugin: [babel-plugin-left-side](https://www.npmjs.com/package/babel-plugin-left-side}) 
+- The AST transformation plugin: [babel-plugin-left-side](https://www.npmjs.com/package/babel-plugin-left-side) 
 - The support library: [babel-plugin-left-side-support](https://www.npmjs.com/package/babel-plugin-left-side-support) 
 
 ### The proposed Syntax and Semantic
