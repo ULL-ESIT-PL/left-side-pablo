@@ -39,6 +39,9 @@ It started out as a fork of the Babel compiler project. Because of the quantity 
 ## Examples
 Check the directory `packages/a-test/in` to see various examples of the extension.
 
+
+## Follows the original README.md of the Babel project
+
 <p align="center">
   The compiler for writing next generation JavaScript.
 </p>
