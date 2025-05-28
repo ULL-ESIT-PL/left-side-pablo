@@ -8,12 +8,15 @@
 
 By Pablo Santana González
 
+## To run the project
+Try the extension yourself [by following the instructions in the package published in npm](https://www.npmjs.com/package/babel-plugin-left-side).
+
 ## Introduction
 
 This repository contains the source code of @PSantanaGlez13's TFG (Trabajo Fin de Grado/Bachellor's Degree Thesis).
 
 ### Background
-Originally, in my third year of my degree in CS I was on the subject Procesadores de Lenguajes (Language Processors) in which we (the students) developed a programming language throughout the course. One of the labs we did was to implement assignable functions in said language.
+Originally, in my third year of my degree in CS I was on the subject Procesadores de Lenguajes (Language Processors) in which we (the students) developed a programming language throughout the course. In one of the labs, we implemented assignable functions in said language.
 
 The concept of assignable functions consists in defining functions that, as the name implies, are later assigned to. This binds the signature of the function to a certain value, overriding the normal behaviour of the function, just as it can be seen in the following pseudocode example:
 
@@ -31,15 +34,10 @@ foo(21) // 21
 ### About the project
 This project is an implementation of the assignable functions in JavaScript. Implementing the assignable functions in a real-world programming language (as opposed to the one developed in class) like JavaScript, that has very active community and is constantly being reviewed, poses as a challenge from a language design point of view, since it has to take into consideration the many particularities of the language itself when defining the semantics of this construct. It is also a learning experience in other aspects, such as JavaScript projects and the tools used for their development and the way a programming language is updated.
 
-It started out as a fork of the Babel compiler project. Because of the quantity of packages in the repo (Babel follows a monorepo structure), the build time of the project was long and unnecesary, since the project uses only the parser and the rest are added packages.
+It started out as a fork of the Babel compiler project. Because of the quantity of packages in the repo (Babel follows a monorepo structure), the build time of the project was long and unnecesary, since the project uses only the parser and the rest are new packages.
 
-The rest of this README.md file comments on the structure of the repo and the syntax and semantics of the extension itself.
-
-## Structure
-
-## Syntax
-
-## Semantics
+## Examples
+Check the directory `packages/a-test/in` to see various examples of the extension.
 
 <p align="center">
   The compiler for writing next generation JavaScript.
