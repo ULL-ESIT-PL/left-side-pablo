@@ -2,9 +2,9 @@ const debug = false;
 const CallableInstance = require("callable-instance");
 const util = require("util");
 const hash = require("object-hash");
-const options = {respectType: false};
+const options = {respectType: false, algorithm: "passthrough"};
 const {equalityExtensionMap} = require('./equalityMap.js');
-const { normalizeArguments } = require("./utils.js");
+const { normalizeArguments, isDeepJSONable } = require("./utils.js");
 
 class StoreMap {
   // Implements the cache based on Map
@@ -13,7 +13,13 @@ class StoreMap {
     this.objectStore = [];
   }
   set(key, value, equalityFun) {
+    if (typeof key === "function") {
+      throw new Error("A function can't be a key in an assignable function");
+    }
     if (key !== null && typeof key === "object") {
+      if (!isDeepJSONable(key)) {
+        throw new Error("The given key contains either a cycle or a function. Key was " + key.toString());
+      }
       const clone = structuredClone(key);
       Object.setPrototypeOf(clone, Object.getPrototypeOf(key));
       this.objectStore.push([clone, value, equalityFun]);
@@ -48,6 +54,12 @@ class StoreMapWithHash {
     this.store = new Map();
   }
   set(key, value, equalityFun) {
+    if (typeof key === "function") {
+      throw new Error("A function can't be a key in an assignable function");
+    }
+    if (!isDeepJSONable(key)) {
+      throw new Error("The given key contains either a cycle or a function. Key was " + key.toString());
+    }
     this.store.set(hash(key, options), value);
   }
   get(key, numParams) {
@@ -74,19 +86,22 @@ class StoreObject {
 let CACHE_TYPE = StoreMapWithHash;
 
 class FunctionObject extends CallableInstance {
-  constructor(a) {
+  constructor(fun, defaultParams) {
     // CallableInstance accepts the name of the property to use as the callable
     // method.
     super("_call");
-    this.rawFunction = a;
+    this.defaultParams = defaultParams;
+    this.rawFunction = fun;
     this.cache = new CACHE_TYPE();
-    this.maxParamNum = a.length;
+    this.maxParamNum = defaultParams.length;
     if (this.cache.constructor === StoreMap) {
       this.function = function (...args) {
         let currentCache = this.cache;
+        // console.log(currentCache);
+        args = normalizeArguments(args, this.defaultParams);
         for (let i = 0; i < this.maxParamNum; ++i) {
           const arg = args[i];
-          if (currentCache instanceof CACHE_TYPE && currentCache.has(arg)) {
+          if (currentCache instanceof this.cache.constructor && currentCache.has(arg)) {
             if (debug) console.log(`Cached value! ${currentCache.get(arg)}`);
             if (i + 1 === this.maxParamNum) {
               return currentCache.get(arg); // Value in cache, return it.
@@ -101,10 +116,12 @@ class FunctionObject extends CallableInstance {
       };
     } else if (this.cache.constructor === StoreMapWithHash) {
       this.function = function (...args) {
-        const normalizedArgs = normalizeArguments(args, this.maxParamNum);
+        // console.log(this.cache)
+        const normalizedArgs = normalizeArguments(args, this.defaultParams);
         if (this.cache.has(normalizedArgs, this.maxParamNum)) {
           return this.cache.get(normalizedArgs, this.maxParamNum);
         }
+        // console.log("Not here")
         return this.rawFunction(...args);
       }
     } else {
@@ -147,9 +164,9 @@ class FunctionObject extends CallableInstance {
   }
 }
 
-function functionObject(a) {
-  if (a instanceof FunctionObject) return a;
-  return new FunctionObject(a);
+function functionObject(fun, defaultParams) {
+  if (fun instanceof FunctionObject) return fun;
+  return new FunctionObject(fun, defaultParams);
 }
 
 module.exports = { functionObject, FunctionObject, CACHE_TYPE, StoreMap, StoreMapWithHash };

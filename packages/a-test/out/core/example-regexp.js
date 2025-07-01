@@ -1,10 +1,10 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let firstRegexp = /abc/g;
 let firstRegexpCopy = /abc/g;
 let secondRegexp = /def/g;

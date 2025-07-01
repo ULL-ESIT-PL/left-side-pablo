@@ -1,20 +1,21 @@
 {
+  "private": true,
   "name": "a-test",
-  "version": "1.0.0",
-  "description": "Support plugin for the assignable functions",
+  "version": "1.1.4",
+  "description": "Private package for testing the implemented solutions",
   "main": "lib/plugin.js",
   "scripts": {
     "test": "npx jest",
-    "build": ""
+    "build": "",
+    "benchmark": "node --max-old-space-size=8192 benchmark/cache_types.js"
   },
   "dependencies": {
-    "@ull-esit-pl/babel-plugin-left-side-plugin": "^1.0.0",
-    "@ull-esit-pl/babel-plugin-left-side-support": "^1.0.1"
+    "babel-plugin-left-side": "^1.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "@babel/preset-env":"^7.26.7",
-    "@babel/eslint-parser":"7.26.10"
+    "@babel/preset-env": "^7.26.7",
+    "@babel/eslint-parser": "7.26.10"
   },
   "author": "Pablo Santana Gonzalez <alu0101480541@ull.edu.es>",
   "license": "ISC"

@@ -1,7 +1,7 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 // Class representing a pair of values
 class Pair {
   constructor(first, second) {
@@ -14,7 +14,7 @@ class Pair {
 }
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let aPair = new Pair(1, 2);
 let sameAsFirst = new Pair(1, 2);
 let otherPair = new Pair(3, 4);

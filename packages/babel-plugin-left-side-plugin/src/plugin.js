@@ -1,11 +1,11 @@
-import * as parser from "@ull-esit-pl/parser-left-side";
+import * as parser from "parser-left-side";
 //const parser = require("@ull-esit-pl/parser-left-side");
 import * as types from "@babel/types"
 //const types = require("@babel/types");
 import _template from "@babel/template";
 const template = _template.default;
 const SUPPORT_TEMPLATE = template(
-  'const {assign, functionObject} = require("@ull-esit-pl/babel-plugin-left-side-support");',
+  'const {assign, functionObject} = require("babel-plugin-left-side-support");',
 )();
 
 // To avoid repeating code in FunctionDeclaration and FunctionExpression. Transforms the assignable function syntax to valid JS.
@@ -21,7 +21,16 @@ function changeAssignableFunctionToValid(node) {
     node.params,
     node.body,
   );
-  const callExpression = types.callExpression(identifier, [funAsExpr]);
+  let defaultParams = []
+  for (let param of node.params) {
+    if (param.type === "AssignmentPattern") {
+      defaultParams.push(param.right); // Assign the user-defined default value
+    } else {
+      defaultParams.push(types.identifier("undefined")); // Implicit undefined value
+    }
+  }
+  defaultParams = types.arrayExpression(defaultParams);
+  const callExpression = types.callExpression(identifier, [funAsExpr, defaultParams]);
   return [funId, callExpression];
 }
 

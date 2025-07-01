@@ -36,24 +36,80 @@ function getAllKeyValues(obj1, obj2) {
 }
 
 /**
- * Fills the given array with undefined.
+ * Fills the given array with the given values
  * @param {array} arr The array to be filled
- * @param {number} numOfArgs The wanted number of arguments
- * @returns {array} The array 
+ * @param {number} defaultValues The default values to fill the array with
+ * @returns {array} The array
  */
-function normalizeArguments(arr, numOfArgs) {
-  const argsDiff = numOfArgs - arr.length;
-  if (argsDiff < 0) { // Over the limit of parameters
-    return arr.slice(0, numOfArgs);
+function normalizeArguments(arr, defaultValues) {
+  if (arr.length > defaultValues) {
+    return arr.slice(0, defaultValues.length);
   }
-  let result = arr.slice();
-  for (let i = 0; i < argsDiff; ++i) {
-    result.push(undefined);
+  return arr.concat(defaultValues.slice(arr.length));
+}
+
+/**
+ * Function to validate the key for the cache
+ * A key is considered valid if doesn't contain cycles or functions
+ * @param {Object}
+ * @returns True if it is a valid key, false otherwise
+ */
+function isDeepJSONable(key) {
+  const seen = new Set();
+
+  function check(value) {
+    // Handle primitives
+    if (value === null) return true;
+
+
+    const type = typeof value;
+    switch (type) {
+      case 'string':
+      case 'number':
+      case 'boolean':
+      case 'bigint':
+      case 'undefined':
+      case 'symbol':
+        return true;
+      case 'function':
+        return false;
+    }
+
+    // Check for circular references
+    if (seen.has(value)) return false;
+    seen.add(value);
+
+    // Handle arrays
+    if (Array.isArray(value)) {
+      return value.every(item => check(item));
+    }
+
+    // Handle objects
+    if (type === 'object') {
+      //console.log(Object.values(value));
+      switch (value?.constructor?. name) {
+         case 'Date':
+         case 'RegExp':
+           return true; // Exteded JSONable
+         case 'Map':
+         case 'Set':
+         case 'WeakMap':
+         case 'WeakSet':
+           //console.log("map or set", value?.constructor?.name);
+          return value.values().toArray().every(item => check(item));
+         default:
+           return Object.values(value).every(v => check(v));
+      }
+    }
+
+    return false;
   }
-  return result;
+
+  return check(key);
 }
 
 module.exports = {
   getAllKeyValues,
-  normalizeArguments
+  normalizeArguments,
+  isDeepJSONable
 }

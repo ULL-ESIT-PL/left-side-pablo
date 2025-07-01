@@ -54,11 +54,12 @@ equalityExtensionMap.set(Date, (first, second) => {
   return [firstValues, secondValues];
 });
 
+/*
 equalityExtensionMap.set(BigInt, (first, second) => {
   const firstValues = [first.toString()];
   const secondValues = [second.toString()];
   return [firstValues, secondValues];
-});
+});*/
 
 module.exports = {
   equalityExtensionMap

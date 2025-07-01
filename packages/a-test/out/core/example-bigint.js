@@ -1,10 +1,10 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (bar) {
   return 0;
-});
+}, [undefined]);
 let firstBigInt = 1000000000000000000000000000000000000n;
 let firstBigIntCopy = 1000000000000000000000000000000000000n;
 let secondBigInt = 1000000000000000000000000000000000001n;

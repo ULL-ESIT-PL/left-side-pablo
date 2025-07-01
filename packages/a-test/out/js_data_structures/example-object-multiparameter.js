@@ -1,10 +1,10 @@
 const {
   assign,
   functionObject
-} = require("@ull-esit-pl/babel-plugin-left-side-support");
+} = require("babel-plugin-left-side-support");
 const foo = functionObject(function (a, b, c, d) {
   return 1;
-});
+}, [undefined, undefined, undefined, undefined]);
 assign(foo, [1, [1, 2, 3], 4, 5], "other", []);
 console.log(foo(1, [1, 2, 3], 4, 5)); // "other"
 console.log(foo(1, [1, 2], 4, 5)); // 1

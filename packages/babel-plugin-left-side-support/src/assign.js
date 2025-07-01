@@ -8,6 +8,7 @@ ASSIGN_FUNCTION_MAP.set(StoreMap, (f, cacheArgs, cacheValue) => {
   //debugger;
   const maxParamNum = f.maxParamNum;
   let currentCache = f.cache;
+  cacheArgs = normalizeArguments(cacheArgs, f.defaultParams);
   for (let i = 0; i < maxParamNum; i++) {
     const cacheArgument = cacheArgs[i];
     const next = i + 1;
@@ -34,7 +35,7 @@ ASSIGN_FUNCTION_MAP.set(StoreMap, (f, cacheArgs, cacheValue) => {
 
 ASSIGN_FUNCTION_MAP.set(StoreMapWithHash, (f, cacheArgs, cacheValue) => {
   // Adjusting arguments so it is always the same
-  const normalizedArgs = normalizeArguments(cacheArgs, f.maxParamNum);
+  const normalizedArgs = normalizeArguments(cacheArgs, f.defaultParams);
   f.setCache(normalizedArgs, cacheValue);
 });
 
