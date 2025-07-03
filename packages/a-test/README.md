@@ -13,3 +13,19 @@ The file in `in` is processed and its output is written in `out`. This output is
 
 ## Adding more tests
 To add more tests you can add the input file to `in` and the expected result when executing in `exec_out`. Make sure both files have the same name.
+
+## First steps
+
+```
+npm run build
+cd packages/a-test/experimental
+npm i 
+npx babel experimental/oop-inheritance.js -o experimental/oop-inheritance.cjs
+node experimental/oop-inheritance.cjs
+```
+The output is:
+
+```
+My name is John.Glad to meet you Juana
+John teaches subjectPL
+```
